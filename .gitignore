@@ -1,0 +1,17 @@
+# Maven
+target/
+
+# Eclipse / Spring Tool Suite
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS Files
+Thumbs.db
+.DS_Store
