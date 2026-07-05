@@ -46,4 +46,69 @@ public class AttendanceRecord {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+	public AttendanceRecord() {
+		super();
+	}
+
+	public AttendanceRecord(Long recordId, AttendanceSession session, Student student, AttendanceStatus status,
+			String remarks, LocalDateTime createdAt) {
+		super();
+		this.recordId = recordId;
+		this.session = session;
+		this.student = student;
+		this.status = status;
+		this.remarks = remarks;
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Long getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(Long recordId) {
+		this.recordId = recordId;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public AttendanceSession getSession() {
+		return session;
+	}
+
+	public void setSession(AttendanceSession session) {
+		this.session = session;
+	}
+
+	public AttendanceStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AttendanceStatus status) {
+		this.status = status;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+    
+    
 }

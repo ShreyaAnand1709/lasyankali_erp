@@ -58,4 +58,115 @@ public class Student {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+	public Student() {
+		super();
+	}
+
+	public Student(Long studentId, User user, Parents parent, String admissionNumber, String gender,
+			LocalDate dateOfBirth, LocalDate joiningDate, String photoUrl, String status, LocalDateTime createdAt,
+			LocalDateTime updatedAt) {
+		super();
+		this.studentId = studentId;
+		this.user = user;
+		this.parent = parent;
+		this.admissionNumber = admissionNumber;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.joiningDate = joiningDate;
+		this.photoUrl = photoUrl;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+	public String getAdmissionNumber() {
+		return admissionNumber;
+	}
+
+	public void setAdmissionNumber(String admissionNumber) {
+		this.admissionNumber = admissionNumber;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public LocalDate getJoiningDate() {
+		return joiningDate;
+	}
+
+	public void setJoiningDate(LocalDate joiningDate) {
+		this.joiningDate = joiningDate;
+	}
+
+	public Parents getParent() {
+		return parent;
+	}
+
+	public void setParent(Parents parent) {
+		this.parent = parent;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+    
+    
 }

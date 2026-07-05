@@ -6,5 +6,5 @@ import com.lasyankali.erp.dto.RegisterUserDTO;
 
 public interface AuthService {
 	void registeredUser(RegisterUserDTO registerUserDTO);
-	LoginResponseDTO loginResponseDTO(LoginRequestDTO loginResponseDTO);
+	LoginResponseDTO loginResponseDTO(LoginRequestDTO loginRequestDTO);
 }

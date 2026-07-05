@@ -39,4 +39,59 @@ public class BatchTeacher {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+	public BatchTeacher() {
+		super();
+	}
+
+	public BatchTeacher(Long batchTeacherId, Batch batch, Teacher teacher, LocalDate assignedDate,
+			LocalDateTime createdAt) {
+		super();
+		this.batchTeacherId = batchTeacherId;
+		this.batch = batch;
+		this.teacher = teacher;
+		this.assignedDate = assignedDate;
+		this.createdAt = createdAt;
+	}
+
+	public LocalDate getAssignedDate() {
+		return assignedDate;
+	}
+
+	public void setAssignedDate(LocalDate assignedDate) {
+		this.assignedDate = assignedDate;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public Long getBatchTeacherId() {
+		return batchTeacherId;
+	}
+
+	public void setBatchTeacherId(Long batchTeacherId) {
+		this.batchTeacherId = batchTeacherId;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+    
 }

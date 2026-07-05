@@ -38,4 +38,60 @@ public class AttendanceSession {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+	public AttendanceSession() {
+		super();
+	}
+
+	public AttendanceSession(Long sessionId, Batch batch, LocalDate attendanceDate, String remark,
+			LocalDateTime createdAt) {
+		super();
+		this.sessionId = sessionId;
+		this.batch = batch;
+		this.attendanceDate = attendanceDate;
+		this.remark = remark;
+		this.createdAt = createdAt;
+	}
+
+	public LocalDate getAttendanceDate() {
+		return attendanceDate;
+	}
+
+	public void setAttendanceDate(LocalDate attendanceDate) {
+		this.attendanceDate = attendanceDate;
+	}
+
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+    
+    
 }

@@ -62,4 +62,115 @@ public class Batch {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+	public Batch() {
+		super();
+	}
+
+	public Batch(Long batchId, String batchCode, String batchName, Discipline discipline, BatchLevel level,
+			LocalTime startTime, LocalTime endTime, Integer capacity, BatchStatus status, LocalDateTime createdAt,
+			LocalDateTime updatedAt) {
+		super();
+		this.batchId = batchId;
+		this.batchCode = batchCode;
+		this.batchName = batchName;
+		this.discipline = discipline;
+		this.level = level;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.capacity = capacity;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+	public String getBatchCode() {
+		return batchCode;
+	}
+
+	public void setBatchCode(String batchCode) {
+		this.batchCode = batchCode;
+	}
+
+	public Long getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(Long batchId) {
+		this.batchId = batchId;
+	}
+
+	public String getBatchName() {
+		return batchName;
+	}
+
+	public void setBatchName(String batchName) {
+		this.batchName = batchName;
+	}
+
+	public Integer getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Discipline getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(Discipline discipline) {
+		this.discipline = discipline;
+	}
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
+	}
+
+	public BatchLevel getLevel() {
+		return level;
+	}
+
+	public void setLevel(BatchLevel level) {
+		this.level = level;
+	}
+
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public BatchStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(BatchStatus status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+    
+    
 }
