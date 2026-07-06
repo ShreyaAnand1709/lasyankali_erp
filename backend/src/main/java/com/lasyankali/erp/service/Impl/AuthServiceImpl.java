@@ -12,6 +12,7 @@ import com.lasyankali.erp.entity.Role;
 import com.lasyankali.erp.entity.User;
 import com.lasyankali.erp.repository.RoleRepository;
 import com.lasyankali.erp.repository.UserRepository;
+import com.lasyankali.erp.security.JwtService;
 import com.lasyankali.erp.service.*;
 
 @Service
@@ -19,12 +20,13 @@ public class AuthServiceImpl implements AuthService{
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository; 
 	private final PasswordEncoder passwordEncoder;
-	
-	public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+	private final JwtService jwtService;
+	public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,JwtService jwtService) {
 		super();
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtService = jwtService;
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class AuthServiceImpl implements AuthService{
 		User savedUser = userRepository.save(user);
 		
 	}
-
+	// building the login response now 
 	@Override
 	public LoginResponseDTO loginResponseDTO(LoginRequestDTO loginRequestDTO) {
 		User user = userRepository.findByUserName(
@@ -74,11 +76,8 @@ public class AuthServiceImpl implements AuthService{
 				loginRequestDTO.getPassword(), user.getPasswordHash())) {
 			throw new RuntimeException("Invalid Password");
 		}
-		
-		// building the login response now 
-		
 	   LoginResponseDTO response = new LoginResponseDTO();
-	   response.setToken("JWT_NOT_IMPLEMENTED");
+	   response.setToken(jwtService.generateToken(user.getUserName()));
 	   response.setUsername(user.getUserName());
 	   response.setRole(user.getRole().getRoleName());
 	   response.setMessage("Login Successful");
