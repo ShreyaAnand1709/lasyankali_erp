@@ -2,6 +2,7 @@ package com.lasyankali.erp.security;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -40,10 +41,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			UserDetails userDetails =
 			        customeUserDetailsService
 			                .loadUserByUsername(username);
-			if(jwtService.isTokenValid(
-			        jwtToken,
-			        userDetails)) {
-
+			if(jwtService.isTokenValid(jwtToken,userDetails)) {
+				UsernamePasswordAuthenticationToken authToken = 
+						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+				filterChain.doFilter(request, response);
 			}
 		}
 		
