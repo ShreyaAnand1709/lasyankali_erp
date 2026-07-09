@@ -1,14 +1,17 @@
 package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.lasyankali.erp.dto.CreateStudentDTO;
 import com.lasyankali.erp.dto.CreateUserDTO;
+import com.lasyankali.erp.dto.StudentResponseDTO;
+import com.lasyankali.erp.dto.UpdateStudentDTO;
 import com.lasyankali.erp.entity.Student;
 import com.lasyankali.erp.entity.User;
+import com.lasyankali.erp.mapper.StudentMapper;
 import com.lasyankali.erp.repository.StudentRepository;
 import com.lasyankali.erp.service.StudentService;
 import com.lasyankali.erp.service.UserService;
@@ -17,11 +20,15 @@ import com.lasyankali.erp.service.UserService;
 public class StudentServiceImpl implements StudentService{
 	private final StudentRepository studentRepository;
 	private  final UserService userService;
-	public StudentServiceImpl(StudentRepository studentRepository, UserService userService) {
+	private final StudentMapper mapStudent;
+	public StudentServiceImpl(StudentRepository studentRepository, UserService userService, StudentMapper mapStudent) {
 		super();
 		this.studentRepository = studentRepository;
 		this.userService = userService;
+		this.mapStudent = mapStudent;
 	}
+	
+	// creating a student and a user 
 	@Transactional
 	@Override
 	public void createStudent(CreateStudentDTO createStudentDto) {
@@ -48,4 +55,33 @@ public class StudentServiceImpl implements StudentService{
 		studentRepository.save(student);
 	}
 
+	// retreiving all the student details
+	@Override
+	public List<StudentResponseDTO> getAllStudents() {
+		List<Student> studentsList = studentRepository.findAll();
+		List<StudentResponseDTO> response = new ArrayList<>();
+		for(Student student : studentsList ) {
+			StudentResponseDTO studentDto = mapStudent.mapToResponse(student);
+			response.add(studentDto);
+		}
+		return response;
+	}
+
+	@Override
+	public StudentResponseDTO getStudentById(Long studentId) {
+		Student student = studentRepository.findById(studentId).
+										orElseThrow(
+												()-> new RuntimeException("Student not found"));
+		StudentResponseDTO studentDto = mapStudent.mapToResponse(student);
+		return studentDto;
+	}
+
+	@Override
+	public StudentResponseDTO updateStudent(Long studentId, UpdateStudentDTO updateStudentDTO) {
+		Student student = studentRepository.findById(studentId).
+				orElseThrow(()-> 
+				new RuntimeException("Student not found"));
+		student.getUser().setFirstName(updateStudentDTO.getFirstName());
+		return null;
+	}	
 }
