@@ -32,7 +32,7 @@ public class Student {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", nullable = false)
+    @JoinColumn(name = "parent_id", nullable = true)
     private Parents parent;
 
     @Column(name = "admission_number", nullable = false, unique = true)

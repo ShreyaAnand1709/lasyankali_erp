@@ -58,3 +58,6 @@ show create table students;
 
 alter table students 
 rename column addmission_number to admission_number;
+
+ALTER TABLE students
+MODIFY parent_id BIGINT NULL;
