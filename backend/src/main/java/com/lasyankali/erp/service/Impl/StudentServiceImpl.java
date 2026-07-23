@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService{
 	// retreiving all the student details
 	@Override
 	public List<StudentResponseDTO> getAllStudents() {
-		List<Student> studentsList = studentRepository.findAll();
+		List<Student> studentsList = studentRepository.findByStatus("ACTIVE");
 		List<StudentResponseDTO> response = new ArrayList<>();
 		for(Student student : studentsList ) {
 			StudentResponseDTO studentDto = mapStudent.mapToResponse(student);
@@ -76,12 +76,37 @@ public class StudentServiceImpl implements StudentService{
 		return studentDto;
 	}
 
+	@Transactional
 	@Override
 	public StudentResponseDTO updateStudent(Long studentId, UpdateStudentDTO updateStudentDTO) {
 		Student student = studentRepository.findById(studentId).
 				orElseThrow(()-> 
 				new RuntimeException("Student not found"));
-		student.getUser().setFirstName(updateStudentDTO.getFirstName());
-		return null;
+		User user = student.getUser();
+		user.setFirstName(updateStudentDTO.getFirstName());
+		user.setLastName(updateStudentDTO.getLastName());
+		user.setEmail(updateStudentDTO.getEmail());
+		user.setMobileNumber(updateStudentDTO.getMobileNumber());
+		
+		student.setAdmissionNumber(updateStudentDTO.getAdmissionNumber());
+		student.setGender(updateStudentDTO.getGender());
+		student.setDateOfBirth(updateStudentDTO.getDateOfBirth());
+		student.setJoiningDate(updateStudentDTO.getJoiningDate());
+		student.setPhotoUrl(updateStudentDTO.getPhotoUrl());
+		student.setStatus(updateStudentDTO.getStatus());
+		student.setUpdatedAt(LocalDateTime.now());
+		
+		studentRepository.save(student);
+		return mapStudent.mapToResponse(student);
+	}
+
+	@Override
+	@Transactional
+	public void deleteStudent(Long studentId) {
+		Student student = studentRepository.findById(studentId).
+				orElseThrow(() -> new RuntimeException("Student not found"));
+		student.setStatus("INACTIVE");
+		student.setUpdatedAt(LocalDateTime.now());
+		studentRepository.save(student);	
 	}	
 }
