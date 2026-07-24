@@ -56,6 +56,8 @@ CREATE TABLE teachers (
 
 show create table students;
 
+select * from students; 
+
 alter table students 
 rename column addmission_number to admission_number;
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lasyankali.erp.dto.CreateStudentDTO;
@@ -58,10 +59,17 @@ public class StudentController {
 	
 	@DeleteMapping("/{studentId}")
 	public ResponseEntity<Void> deleteStudent(@PathVariable Long studentId) {
-
 	    studentService.deleteStudent(studentId);
-
 	    return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<StudentResponseDTO>> searchStudents(
+	        @RequestParam String keyword) {
+
+	    List<StudentResponseDTO> students = studentService.searchStudents(keyword);
+
+	    return ResponseEntity.ok(students);
 	}
 	
 }
