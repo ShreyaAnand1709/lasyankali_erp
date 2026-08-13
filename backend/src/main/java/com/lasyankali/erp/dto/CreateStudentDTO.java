@@ -2,6 +2,8 @@ package com.lasyankali.erp.dto;
 
 import java.time.LocalDate;
 
+import com.lasyankali.erp.entity.enums.Gender;
+
 public class CreateStudentDTO {
 	private String firstName;
 	private String lastName;
@@ -11,12 +13,12 @@ public class CreateStudentDTO {
 	private String mobileNumber;
 	private Long parentId;
 	private String admissionNumber;
-	private String gender;
+	private Gender gender;
 	private LocalDate dateOfBirth;
 	private LocalDate joiningDate;
 	private String photoUrl;
 	public CreateStudentDTO(String firstName, String lastName, String username, String email, String password,
-			String mobileNumber, Long parentId, String admissionNumber, String gender, LocalDate dateOfBirth,
+			String mobileNumber, Long parentId, String admissionNumber, Gender gender, LocalDate dateOfBirth,
 			LocalDate joiningDate, String photoUrl) {
 		super();
 		this.firstName = firstName;
@@ -101,10 +103,10 @@ public class CreateStudentDTO {
 	public void setJoiningDate(LocalDate joiningDate) {
 		this.joiningDate = joiningDate;
 	}
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 	

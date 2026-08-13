@@ -90,3 +90,6 @@ create table exam_results (
     references exam_registrations(registration_id)
     
 );
+
+ALTER TABLE universities 
+modify status enum('ACTIVE','INACTIVE') default 'ACTIVE';

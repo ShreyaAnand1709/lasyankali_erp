@@ -13,6 +13,7 @@ import com.lasyankali.erp.dto.StudentResponseDTO;
 import com.lasyankali.erp.dto.UpdateStudentDTO;
 import com.lasyankali.erp.entity.Student;
 import com.lasyankali.erp.entity.User;
+import com.lasyankali.erp.entity.enums.Status;
 import com.lasyankali.erp.mapper.StudentMapper;
 import com.lasyankali.erp.repository.StudentRepository;
 import com.lasyankali.erp.service.StudentService;
@@ -52,7 +53,7 @@ public class StudentServiceImpl implements StudentService{
 		student.setDateOfBirth(createStudentDto.getDateOfBirth());
 		student.setJoiningDate(createStudentDto.getJoiningDate());
 		student.setPhotoUrl(createStudentDto.getPhotoUrl());	
-		student.setStatus("ACTIVE");
+		student.setStatus(Status.ACTIVE);
 		student.setCreatedAt(LocalDateTime.now());
 		student.setUpdatedAt(LocalDateTime.now());
 		studentRepository.save(student);
@@ -60,9 +61,9 @@ public class StudentServiceImpl implements StudentService{
 
 	// retreiving all the student details
 	@Override
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public List<StudentResponseDTO> getAllStudents() {
-		List<Student> studentsList = studentRepository.findByStatus("ACTIVE");
+		List<Student> studentsList = studentRepository.findByStatus(Status.ACTIVE);
 		List<StudentResponseDTO> response = new ArrayList<>();
 		for(Student student : studentsList ) {
 			StudentResponseDTO studentDto = mapStudent.mapToResponse(student);
@@ -72,7 +73,7 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public StudentResponseDTO getStudentById(Long studentId) {
 		Student student = studentRepository.findById(studentId).
 										orElseThrow(
@@ -112,13 +113,13 @@ public class StudentServiceImpl implements StudentService{
 	public void deleteStudent(Long studentId) {
 		Student student = studentRepository.findById(studentId).
 				orElseThrow(() -> new RuntimeException("Student not found"));
-		student.setStatus("INACTIVE");
+		student.setStatus(Status.INACTIVE);
 		student.setUpdatedAt(LocalDateTime.now());
 		studentRepository.save(student);	
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public List<StudentResponseDTO> searchStudents(String keyword) {
 		    List<Student> students = studentRepository.searchStudents(keyword);
 		    return students.stream()

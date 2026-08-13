@@ -54,3 +54,15 @@ create table batch_teacher (
     unique(batch_id, teacher_id)
     
 );
+
+ALTER TABLE Batches
+MODIFY discipline enum('BHARATANATYAM','VOCAL','TABALA','YOGA');
+
+ALTER TABLE Batches
+modify level enum('BEGINNER','INTERMEDIATE','ADVANCED') NOT NULL;
+
+ALTER TABLE Batches
+MODIFY status enum('ACTIVE','INACTIVE') default 'ACTIVE';
+
+ALTER TABLE batch_students 
+MODIFY status enum('ACTIVE','COMPLETED','DROPPED');

@@ -2,20 +2,23 @@ package com.lasyankali.erp.dto;
 
 import java.time.LocalDate;
 
+import com.lasyankali.erp.entity.enums.Gender;
+import com.lasyankali.erp.entity.enums.Status;
+
 public class UpdateStudentDTO {
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String mobileNumber;
 	private String admissionNumber;
-	private String gender;
+	private Gender gender;
 	private LocalDate dateOfBirth;
 	private LocalDate joiningDate;
 	private String photoUrl;
-	private String status;
+	private Status status;
 	public UpdateStudentDTO(String firstName, String lastName, String email, String mobileNumber,
-			String admissionNumber, String gender, LocalDate dateOfBirth, LocalDate joiningDate, String photoUrl,
-			String status) {
+			String admissionNumber, Gender gender, LocalDate dateOfBirth, LocalDate joiningDate, String photoUrl,
+			Status status) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -61,10 +64,10 @@ public class UpdateStudentDTO {
 	public void setAdmissionNumber(String admissionNumber) {
 		this.admissionNumber = admissionNumber;
 	}
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 	public LocalDate getDateOfBirth() {
@@ -85,10 +88,10 @@ public class UpdateStudentDTO {
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	

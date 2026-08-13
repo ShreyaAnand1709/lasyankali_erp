@@ -30,3 +30,5 @@ create table attendance_records (
 );
 
 desc attendance_records;
+alter table attendance_records
+modify status enum('PRESENT','ABSENT');

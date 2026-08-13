@@ -2,47 +2,46 @@ package com.lasyankali.erp.dto;
 
 import java.time.LocalDate;
 
-import com.lasyankali.erp.entity.enums.Gender;
 import com.lasyankali.erp.entity.enums.Status;
 
-public class StudentResponseDTO {
-	private Long studentId;
+public class TeacherResponseDTO {
+	private Long teacherId;
 	private String firstName;
 	private String lastName;
 	private String username;
 	private String email;
 	private String mobileNumber;
-	private String admissionNumber;
-	private Gender gender;
+	private String employeeCode;
+	private String specialization;
+	private String qualification;
+	private Integer yearsOfExperience;
 	private LocalDate joiningDate;
-	private String photoUrl;
 	private Status status;
-	public StudentResponseDTO() {
+	public TeacherResponseDTO() {
 		super();
 	}
-	
-	public StudentResponseDTO(Long studentId, String firstName, String lastName, String username, String email,
-			String mobileNumber, String admissionNumber, Gender gender, LocalDate joiningDate, String photoUrl,
-			Status status) {
+	public TeacherResponseDTO(Long teacherId, String firstName, String lastName, String username, String email, String mobileNumber,
+			String employeeCode, String specialization, String qualification, Integer yearsOfExperience,
+			LocalDate joiningDate, Status status) {
 		super();
-		this.studentId = studentId;
+		this.teacherId = teacherId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
 		this.mobileNumber = mobileNumber;
-		this.admissionNumber = admissionNumber;
-		this.gender = gender;
+		this.employeeCode = employeeCode;
+		this.specialization = specialization;
+		this.qualification = qualification;
+		this.yearsOfExperience = yearsOfExperience;
 		this.joiningDate = joiningDate;
-		this.photoUrl = photoUrl;
 		this.status = status;
 	}
-
-	public Long getStudentId() {
-		return studentId;
+	public Long getTeacherId() {
+		return teacherId;
 	}
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
+	public void setTeacherId(Long teacherId) {
+		this.teacherId = teacherId;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -74,17 +73,29 @@ public class StudentResponseDTO {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	public String getAdmissionNumber() {
-		return admissionNumber;
+	public String getEmployeeCode() {
+		return employeeCode;
 	}
-	public void setAdmissionNumber(String admissionNumber) {
-		this.admissionNumber = admissionNumber;
+	public void setEmployeeCode(String employeeCode) {
+		this.employeeCode = employeeCode;
 	}
-	public Gender getGender() {
-		return gender;
+	public String getSpecialization() {
+		return specialization;
 	}
-	public void setGender(Gender gender) {
-		this.gender = gender;
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
+	public String getQualification() {
+		return qualification;
+	}
+	public void setQualification(String qualification) {
+		this.qualification = qualification;
+	}
+	public Integer getYearsOfExperience() {
+		return yearsOfExperience;
+	}
+	public void setYearsOfExperience(Integer yearsOfExperience) {
+		this.yearsOfExperience = yearsOfExperience;
 	}
 	public LocalDate getJoiningDate() {
 		return joiningDate;
@@ -92,16 +103,11 @@ public class StudentResponseDTO {
 	public void setJoiningDate(LocalDate joiningDate) {
 		this.joiningDate = joiningDate;
 	}
-	public String getPhotoUrl() {
-		return photoUrl;
-	}
-	public void setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
-	}
 	public Status getStatus() {
 		return status;
 	}
 	public void setStatus(Status status) {
 		this.status = status;
-	}	
+	}
+	
 }

@@ -63,3 +63,9 @@ rename column addmission_number to admission_number;
 
 ALTER TABLE students
 MODIFY parent_id BIGINT NULL;
+
+ALTER TABLE students
+MODIFY gender ENUM('MALE','FEMALE','OTHER') NOT NULL;
+
+ALTER TABLE students
+MODIFY status ENUM('ACTIVE','INACTIVE')

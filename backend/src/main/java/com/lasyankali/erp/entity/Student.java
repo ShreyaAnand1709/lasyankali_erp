@@ -3,8 +3,13 @@ package com.lasyankali.erp.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.lasyankali.erp.entity.enums.Gender;
+import com.lasyankali.erp.entity.enums.Status;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,9 +42,10 @@ public class Student {
 
     @Column(name = "admission_number", nullable = false, unique = true)
     private String admissionNumber;
-
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    private String gender;
+    private Gender gender;
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
@@ -49,9 +55,10 @@ public class Student {
 
     @Column(name = "photo_url")
     private String photoUrl;
-
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @Column(name = "create_at")
     private LocalDateTime createdAt;
@@ -63,8 +70,8 @@ public class Student {
 		super();
 	}
 
-	public Student(Long studentId, User user, Parents parent, String admissionNumber, String gender,
-			LocalDate dateOfBirth, LocalDate joiningDate, String photoUrl, String status, LocalDateTime createdAt,
+	public Student(Long studentId, User user, Parents parent, String admissionNumber, Gender gender,
+			LocalDate dateOfBirth, LocalDate joiningDate, String photoUrl, Status status, LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
 		super();
 		this.studentId = studentId;
@@ -104,11 +111,11 @@ public class Student {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
@@ -136,11 +143,11 @@ public class Student {
 		this.photoUrl = photoUrl;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

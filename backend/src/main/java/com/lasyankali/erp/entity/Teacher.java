@@ -3,8 +3,12 @@ package com.lasyankali.erp.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.lasyankali.erp.entity.enums.Status;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,9 +48,10 @@ public class Teacher {
 
     @Column(name = "joining_date")
     private LocalDate joiningDate;
-
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -94,11 +99,11 @@ public class Teacher {
 		this.specialization = specialization;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
@@ -135,7 +140,7 @@ public class Teacher {
 	}
 
 	public Teacher(Long teacherId, User user, String employeeCode, String specialization, String qualification,
-			Integer yearsOfExperience, LocalDate joiningDate, String status, LocalDateTime createdAt,
+			Integer yearsOfExperience, LocalDate joiningDate, Status status, LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
 		super();
 		this.teacherId = teacherId;
