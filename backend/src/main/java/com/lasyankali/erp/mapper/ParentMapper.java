@@ -1,8 +1,11 @@
 package com.lasyankali.erp.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.lasyankali.erp.dto.ParentResponseDTO;
 import com.lasyankali.erp.entity.Parents;
 
+@Component
 public class ParentMapper {
 	public ParentResponseDTO mapToResponse(Parents parent) {
 
@@ -16,7 +19,6 @@ public class ParentMapper {
         dto.setMobileNumber(parent.getUser().getMobileNumber());
         dto.setOccupation(parent.getOccupation());
         dto.setAddress(parent.getAddress());
-
 
         return dto;
     }

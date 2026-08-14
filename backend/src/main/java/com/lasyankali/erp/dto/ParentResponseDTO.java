@@ -4,6 +4,7 @@ public class ParentResponseDTO {
 	// User Details
 	private Long parentId;
     private String firstName;
+    private String username;
     private String lastName;
     private String email;
     private String mobileNumber;
@@ -14,16 +15,23 @@ public class ParentResponseDTO {
 	public ParentResponseDTO() {
 		super();
 	}
-	public ParentResponseDTO(Long parentId,String firstName, String lastName, String email, String mobileNumber, String occupation,
+	public ParentResponseDTO(Long parentId,String firstName, String lastName,String username, String email, String mobileNumber, String occupation,
 			String address) {
 		super();
 		this.parentId = parentId;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.username = username;
 		this.email = email;
 		this.mobileNumber = mobileNumber;
 		this.occupation = occupation;
 		this.address = address;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public Long getParentId() {
 		return parentId;
