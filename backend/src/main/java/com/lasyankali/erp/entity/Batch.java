@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 import com.lasyankali.erp.entity.enums.BatchLevel;
 import com.lasyankali.erp.entity.enums.BatchStatus;
-import com.lasyankali.erp.entity.enums.Discipline;
+import com.lasyankali.erp.entity.enums.Disciplines;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +38,7 @@ public class Batch {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "discipline", nullable = false)
-    private Discipline discipline;
+    private Disciplines discipline;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
@@ -67,7 +67,7 @@ public class Batch {
 		super();
 	}
 
-	public Batch(Long batchId, String batchCode, String batchName, Discipline discipline, BatchLevel level,
+	public Batch(Long batchId, String batchCode, String batchName, Disciplines discipline, BatchLevel level,
 			LocalTime startTime, LocalTime endTime, Integer capacity, BatchStatus status, LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
 		super();
@@ -124,11 +124,11 @@ public class Batch {
 		this.createdAt = createdAt;
 	}
 
-	public Discipline getDiscipline() {
+	public Disciplines getDiscipline() {
 		return discipline;
 	}
 
-	public void setDiscipline(Discipline discipline) {
+	public void setDiscipline(Disciplines discipline) {
 		this.discipline = discipline;
 	}
 

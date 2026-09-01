@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +12,13 @@ import com.lasyankali.erp.dto.CreateStudentDTO;
 import com.lasyankali.erp.dto.CreateUserDTO;
 import com.lasyankali.erp.dto.StudentResponseDTO;
 import com.lasyankali.erp.dto.UpdateStudentDTO;
+import com.lasyankali.erp.entity.Parents;
 import com.lasyankali.erp.entity.Student;
 import com.lasyankali.erp.entity.User;
 import com.lasyankali.erp.entity.enums.Status;
+import com.lasyankali.erp.events.AccountCreationEvent;
 import com.lasyankali.erp.mapper.StudentMapper;
+import com.lasyankali.erp.repository.ParentRepository;
 import com.lasyankali.erp.repository.StudentRepository;
 import com.lasyankali.erp.service.StudentService;
 import com.lasyankali.erp.service.UserService;
@@ -24,11 +28,15 @@ public class StudentServiceImpl implements StudentService{
 	private final StudentRepository studentRepository;
 	private  final UserService userService;
 	private final StudentMapper mapStudent;
-	public StudentServiceImpl(StudentRepository studentRepository, UserService userService, StudentMapper mapStudent) {
+	private final ParentRepository parentRepository;
+	private final ApplicationEventPublisher eventPublisher;
+	public StudentServiceImpl(StudentRepository studentRepository, UserService userService, StudentMapper mapStudent, ParentRepository parentRepository, ApplicationEventPublisher eventPublisher) {
 		super();
 		this.studentRepository = studentRepository;
 		this.userService = userService;
 		this.mapStudent = mapStudent;
+		this.parentRepository = parentRepository;
+		this.eventPublisher = eventPublisher;
 	}
 	
 	// creating a student and a user 
@@ -36,27 +44,92 @@ public class StudentServiceImpl implements StudentService{
 	@Override
 	@PreAuthorize("hasRole('ADMIN')")
 	public void createStudent(CreateStudentDTO createStudentDto) {
-		CreateUserDTO createUserdto = new CreateUserDTO(); 
-		createUserdto.setFirstName(createStudentDto.getFirstName());
-		createUserdto.setLastName(createStudentDto.getLastName());
-		createUserdto.setUsername(createStudentDto.getUsername());
-		createUserdto.setEmail(createStudentDto.getEmail());
-		createUserdto.setPassword(createStudentDto.getPassword());
-		createUserdto.setMobileNumber(createStudentDto.getMobileNumber());
-		createUserdto.setRoleName("STUDENT");
-		User savedUser = userService.createUser(createUserdto);
-		
-		Student student = new Student();
-		student.setUser(savedUser);
-		student.setAdmissionNumber(createStudentDto.getAdmissionNumber());
-		student.setGender(createStudentDto.getGender());
-		student.setDateOfBirth(createStudentDto.getDateOfBirth());
-		student.setJoiningDate(createStudentDto.getJoiningDate());
-		student.setPhotoUrl(createStudentDto.getPhotoUrl());	
-		student.setStatus(Status.ACTIVE);
-		student.setCreatedAt(LocalDateTime.now());
-		student.setUpdatedAt(LocalDateTime.now());
-		studentRepository.save(student);
+		// ==========================================
+	    // 1. CREATE PARENT USER
+	    // ==========================================
+
+	    CreateUserDTO parentUserDTO = new CreateUserDTO();
+
+	    parentUserDTO.setFirstName(createStudentDto.getParentFirstName());
+	    parentUserDTO.setLastName(createStudentDto.getParentLastName());
+	    parentUserDTO.setUsername(createStudentDto.getParentUsername());
+	    parentUserDTO.setEmail(createStudentDto.getParentEmail());
+	    parentUserDTO.setPassword(createStudentDto.getParentPassword());
+	    parentUserDTO.setMobileNumber(createStudentDto.getParentMobileNumber());
+	    parentUserDTO.setRoleName("PARENT");
+
+	    User savedParentUser = userService.createUser(parentUserDTO);
+
+
+	    // ==========================================
+	    // 2. CREATE PARENT
+	    // ==========================================
+
+	    Parents parent = new Parents();
+
+	    parent.setUser(savedParentUser);
+	    parent.setOccupation(createStudentDto.getOccupation());
+	    parent.setAddress(createStudentDto.getAddress());
+	    parent.setCreatedAt(LocalDateTime.now());
+	    parent.setUpdatedAt(LocalDateTime.now());
+
+	    Parents savedParent = parentRepository.save(parent);
+	    
+	    eventPublisher.publishEvent(new AccountCreationEvent(
+	    		parentUserDTO.getEmail(),
+	    		parentUserDTO.getFirstName(),
+	    		parentUserDTO.getUsername(),
+	    		parentUserDTO.getPassword(),
+	    		parentUserDTO.getRoleName()));
+
+
+	    // ==========================================
+	    // 3. CREATE STUDENT USER
+	    // ==========================================
+
+	    CreateUserDTO studentUserDTO = new CreateUserDTO();
+
+	    studentUserDTO.setFirstName(createStudentDto.getFirstName());
+	    studentUserDTO.setLastName(createStudentDto.getLastName());
+	    studentUserDTO.setUsername(createStudentDto.getUsername());
+	    studentUserDTO.setEmail(createStudentDto.getEmail());
+	    studentUserDTO.setPassword(createStudentDto.getPassword());
+	    studentUserDTO.setMobileNumber(createStudentDto.getMobileNumber());
+	    studentUserDTO.setRoleName("STUDENT");
+
+	    User savedStudentUser = userService.createUser(studentUserDTO);
+
+
+	    // ==========================================
+	    // 4. CREATE STUDENT
+	    // ==========================================
+
+	    Student student = new Student();
+
+	    student.setUser(savedStudentUser);
+
+	    // Link student to parent
+	    student.setParent(savedParent);
+
+	    student.setAdmissionNumber(createStudentDto.getAdmissionNumber());
+	    student.setGender(createStudentDto.getGender());
+	    student.setDateOfBirth(createStudentDto.getDateOfBirth());
+	    student.setJoiningDate(createStudentDto.getJoiningDate());
+	    student.setPhotoUrl(createStudentDto.getPhotoUrl());
+
+	    student.setStatus(Status.ACTIVE);
+
+	    student.setCreatedAt(LocalDateTime.now());
+	    student.setUpdatedAt(LocalDateTime.now());
+
+	    studentRepository.save(student);
+	    
+	    eventPublisher.publishEvent(new AccountCreationEvent(
+	    		studentUserDTO.getEmail(),
+	    		studentUserDTO.getFirstName(),
+	    		studentUserDTO.getUsername(),
+	    		studentUserDTO.getPassword(),
+	    		studentUserDTO.getRoleName()));
 	}
 
 	// retreiving all the student details

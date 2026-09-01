@@ -68,4 +68,6 @@ ALTER TABLE students
 MODIFY gender ENUM('MALE','FEMALE','OTHER') NOT NULL;
 
 ALTER TABLE students
-MODIFY status ENUM('ACTIVE','INACTIVE')
+MODIFY status ENUM('ACTIVE','INACTIVE');
+
+select * from parents;
