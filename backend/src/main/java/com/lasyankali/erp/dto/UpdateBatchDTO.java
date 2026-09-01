@@ -7,8 +7,8 @@ import com.lasyankali.erp.entity.enums.BatchStatus;
 import com.lasyankali.erp.entity.enums.Disciplines;
 
 public class UpdateBatchDTO {
-	private String BatchName;
-	private Disciplines disciplines;
+	private String batchName;
+	private Disciplines discipline;
 	private BatchLevel level;
 	private LocalTime startTime;
 	private LocalTime endTime;
@@ -17,11 +17,11 @@ public class UpdateBatchDTO {
 	public UpdateBatchDTO() {
 		super();
 	}
-	public UpdateBatchDTO(String batchName, Disciplines disciplines, BatchLevel level, LocalTime startTime,
+	public UpdateBatchDTO(String batchName, Disciplines discipline, BatchLevel level, LocalTime startTime,
 			LocalTime endTime, Integer capacity, BatchStatus status) {
 		super();
-		BatchName = batchName;
-		this.disciplines = disciplines;
+		this.batchName = batchName;
+		this.discipline = discipline;
 		this.level = level;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -29,16 +29,16 @@ public class UpdateBatchDTO {
 		this.status = status;
 	}
 	public String getBatchName() {
-		return BatchName;
+		return batchName;
 	}
 	public void setBatchName(String batchName) {
-		BatchName = batchName;
+		this.batchName = batchName;
 	}
 	public Disciplines getDisciplines() {
-		return disciplines;
+		return discipline;
 	}
-	public void setDisciplines(Disciplines disciplines) {
-		this.disciplines = disciplines;
+	public void setDisciplines(Disciplines discipline) {
+		this.discipline = discipline;
 	}
 	public BatchLevel getLevel() {
 		return level;
