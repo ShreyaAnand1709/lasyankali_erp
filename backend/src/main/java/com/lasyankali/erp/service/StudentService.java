@@ -7,7 +7,7 @@ import com.lasyankali.erp.dto.StudentResponseDTO;
 import com.lasyankali.erp.dto.UpdateStudentDTO;
 
 public interface StudentService {
-	void createStudent(CreateStudentDTO createStudentDto);
+	void createStudent(CreateStudentDTO createStudentDtO);
 	List<StudentResponseDTO> getAllStudents();
 	StudentResponseDTO getStudentById(Long studentId);
 	StudentResponseDTO updateStudent(Long studentId,
