@@ -1,27 +1,32 @@
 package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
 
 import com.lasyankali.erp.dto.BatchResponseDTO;
 import com.lasyankali.erp.dto.CreateBatchDTO;
 import com.lasyankali.erp.dto.UpdateBatchDTO;
 import com.lasyankali.erp.entity.Batch;
 import com.lasyankali.erp.entity.enums.BatchStatus;
+import com.lasyankali.erp.mapper.BatchMapper;
 import com.lasyankali.erp.repository.BatchRepository;
 import com.lasyankali.erp.service.BatchService;
-
 import jakarta.transaction.Transactional;
 
+@Service
 public class BatchServiceImpl implements BatchService{
 	
 	private final BatchRepository batchRepository;
+	private final BatchMapper batchmapper;
 	
-	public BatchServiceImpl(BatchRepository batchRepository) {
+	public BatchServiceImpl(BatchRepository batchRepository, BatchMapper batchmapper) {
 		super();
 		this.batchRepository = batchRepository;
+		this.batchmapper = batchmapper;
 	}
 
 	@Override
@@ -74,33 +79,97 @@ public class BatchServiceImpl implements BatchService{
 	}
 
 	@Override
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public List<BatchResponseDTO> getAllBatches() {
 		// TODO Auto-generated method stub
-		return null;
+		List<Batch> batchList = batchRepository.findByStatus(BatchStatus.ACTIVE);
+		List<BatchResponseDTO> response = new ArrayList<>();
+		for(Batch batch : batchList ) {
+			BatchResponseDTO batchDto = batchmapper.mapToBatchResponse(batch);
+			response.add(batchDto);
+		}
+		return response;
 	}
 
 	@Override
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public BatchResponseDTO getBatchById(Long batchId) {
-		// TODO Auto-generated method stub
-		return null;
+		Batch batch = batchRepository.findById(batchId).
+				orElseThrow(
+						()-> new RuntimeException("Batch not found"));
+		BatchResponseDTO response = batchmapper.mapToBatchResponse(batch);
+		return response;
 	}
 
 	@Override
-	public BatchResponseDTO updateBatch(Long studentId, UpdateBatchDTO updateStudentDTO) {
+	@Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+	public BatchResponseDTO updateBatch(Long batchId, UpdateBatchDTO updateBatchDTO) {
 		// TODO Auto-generated method stub
-		return null;
+		Batch batch = batchRepository.findById(batchId).
+				orElseThrow(
+						()-> new RuntimeException("Batch not found"));
+		if (updateBatchDTO.getCapacity() == null
+                || updateBatchDTO.getCapacity() <= 0) {
+
+            throw new RuntimeException(
+                    "Batch capacity must be greater than 0"
+            );
+        }
+
+        // 3. Validate timings
+        if (updateBatchDTO.getStartTime() == null
+                || updateBatchDTO.getEndTime() == null) {
+
+            throw new RuntimeException(
+                    "Batch start time and end time are required"
+            );
+        }
+
+        if (!updateBatchDTO.getStartTime()
+                .isBefore(updateBatchDTO.getEndTime())) {
+
+            throw new RuntimeException(
+                    "Batch start time must be before end time"
+            );
+        }
+		batch.setBatchName(updateBatchDTO.getBatchName());
+		batch.setDiscipline(updateBatchDTO.getDisciplines());
+		batch.setLevel(updateBatchDTO.getLevel());
+		batch.setStartTime(updateBatchDTO.getStartTime());
+		batch.setEndTime(updateBatchDTO.getEndTime());
+		batch.setCapacity(updateBatchDTO.getCapacity());
+		if (updateBatchDTO.getStatus() != null) {
+		    batch.setStatus(updateBatchDTO.getStatus());
+		}
+		batch.setUpdatedAt(LocalDateTime.now());
+		batchRepository.save(batch);
+		BatchResponseDTO response = batchmapper.mapToBatchResponse(batch);
+		return response;
 	}
 
 	@Override
-	public void deleteStudent(Long studentId) {
+	@Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+	public void deleteBatch(Long batchId) {
 		// TODO Auto-generated method stub
+		Batch batch = batchRepository.findById(batchId).
+				orElseThrow(
+						()-> new RuntimeException("Batch not found"));
+		batch.setStatus(BatchStatus.INACTIVE);
+		batch.setUpdatedAt(LocalDateTime.now());
+		batchRepository.save(batch);
 		
 	}
 
 	@Override
-	public List<BatchResponseDTO> searchStudents(String keyword) {
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+	public List<BatchResponseDTO> searchBatch(String keyword) {
 		// TODO Auto-generated method stub
-		return null;
+		List<Batch> batches = batchRepository.searchBatch(keyword);
+	    return batches.stream()
+	            .map(batchmapper::mapToBatchResponse)
+	            .toList();
 	}
 
 }

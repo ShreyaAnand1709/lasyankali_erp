@@ -11,8 +11,8 @@ public interface BatchService {
 	void createBatch(CreateBatchDTO createBatchDTo);
 	List<BatchResponseDTO> getAllBatches();
 	BatchResponseDTO getBatchById(Long batchId);
-	BatchResponseDTO updateBatch(Long studentId,
-            UpdateBatchDTO updateStudentDTO);
-	void deleteStudent(Long studentId);
-	List<BatchResponseDTO> searchStudents(String keyword);
+	BatchResponseDTO updateBatch(Long batchId,
+            UpdateBatchDTO updateBatchDTO);
+	void deleteBatch(Long batchId);
+	List<BatchResponseDTO> searchBatch(String keyword);
 }
