@@ -1,0 +1,30 @@
+info:
+  name: BatchCreating
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://localhost:8080/api/batches
+  body:
+    type: json
+    data: |-
+      {
+        "batchCode": "BNAT-BEG-02",
+        "batchName": "Bharatanatyam Beginner Evening Batch",
+        "discipline": "BHARATANATYAM",
+        "level": "BEGINNER",
+        "startTime": "17:00:00",
+        "endTime": "18:30:00",
+        "capacity": 20
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODc5NTk0MiwiZXhwIjoxNzg4ODgyMzQyfQ.vUWvscbMCs1GaDy9SaXRrE_N0zCbGT6p2mHI-EcYuiR2DMRUGWcqd7v-Ua8p5DTBYW0T1bW0YhVRrw7iS1vJhA
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

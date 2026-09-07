@@ -1,0 +1,35 @@
+info:
+  name: createTeacher
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: http://localhost:8080/api/teachers
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "Meera",
+        "lastName": "Rao",
+        "username": "meera.rao",
+        "email": "meera.rao@example.com",
+        "password": "Teacher@456",
+        "mobileNumber": "9876543210",
+        "employeeCode":"EMP002",
+        "specialization": "Vocal",
+        "qualification": "Vidwat in Hindustani Classical Music",
+        "experienceYears": 8,
+        "joiningDate": "2026-09-07",
+        "photoUrl": null
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODc5NTk0MiwiZXhwIjoxNzg4ODgyMzQyfQ.vUWvscbMCs1GaDy9SaXRrE_N0zCbGT6p2mHI-EcYuiR2DMRUGWcqd7v-Ua8p5DTBYW0T1bW0YhVRrw7iS1vJhA
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

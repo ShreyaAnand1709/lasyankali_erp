@@ -71,3 +71,5 @@ ALTER TABLE students
 MODIFY status ENUM('ACTIVE','INACTIVE');
 
 select * from parents;
+select * from students;
+select * from teachers;
