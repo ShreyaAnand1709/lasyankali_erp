@@ -1,8 +1,11 @@
 package com.lasyankali.erp.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.lasyankali.erp.dto.BatchResponseDTO;
 import com.lasyankali.erp.entity.Batch;
 
+@Component
 public class BatchMapper {
  public BatchResponseDTO mapToBatchResponse(Batch batch) {
 	 BatchResponseDTO batchDTO = new BatchResponseDTO();

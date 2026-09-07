@@ -2,13 +2,10 @@ package com.lasyankali.erp.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import com.lasyankali.erp.entity.Batch;
-import com.lasyankali.erp.entity.Student;
 import com.lasyankali.erp.entity.enums.BatchStatus;
 
 public interface BatchRepository extends JpaRepository<Batch, Long>{

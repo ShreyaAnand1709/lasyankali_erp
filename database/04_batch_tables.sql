@@ -66,3 +66,5 @@ MODIFY status enum('ACTIVE','INACTIVE') default 'ACTIVE';
 
 ALTER TABLE batch_students 
 MODIFY status enum('ACTIVE','COMPLETED','DROPPED');
+
+select * from batches;

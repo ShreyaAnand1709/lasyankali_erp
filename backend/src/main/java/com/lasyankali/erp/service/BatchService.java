@@ -15,4 +15,8 @@ public interface BatchService {
             UpdateBatchDTO updateBatchDTO);
 	void deleteBatch(Long batchId);
 	List<BatchResponseDTO> searchBatch(String keyword);
+	void assignTeacherToBatch(Long batchId, Long teacherId);
+	void deleteTeacher(Long batchId, Long teacherId);
+	void assignStudentToBatch(Long batchId, Long studentId);
+	void deleteStudent(Long batchId, Long studentId);
 }

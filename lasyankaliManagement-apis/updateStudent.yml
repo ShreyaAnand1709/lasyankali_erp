@@ -1,0 +1,44 @@
+info:
+  name: updateStudent
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: http://localhost:8080/api/student/7
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "Nandini",
+        "lastName": "Kulkarni",
+        "username": "nandini.kulkarni",
+        "email": "nandini.kulkarni@example.com",
+        "password": "Student@456",
+        "mobileNumber": "9845012345",
+
+        "admissionNumber": "LAS2026002",
+        "gender": "FEMALE",
+        "dateOfBirth": "2013-08-21",
+        "joiningDate": "2026-09-07",
+        "photoUrl": null,
+
+        "parentFirstName": "Madhav",
+        "parentLastName": "Kulkarni",
+        "parentUsername": "madhav.kulkarni",
+        "parentEmail": "madhav.kulkarni@example.com",
+        "parentPassword": "Parent@456",
+        "parentMobileNumber": "9900123456",
+        "occupation": "Business",
+        "address": "Malleshwaram, Bengaluru"
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODc5NTk0MiwiZXhwIjoxNzg4ODgyMzQyfQ.vUWvscbMCs1GaDy9SaXRrE_N0zCbGT6p2mHI-EcYuiR2DMRUGWcqd7v-Ua8p5DTBYW0T1bW0YhVRrw7iS1vJhA
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

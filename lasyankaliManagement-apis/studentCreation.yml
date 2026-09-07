@@ -1,0 +1,44 @@
+info:
+  name: studentCreation
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:8080/api/student
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "Ana",
+        "lastName": "Rao",
+        "username": "ana.rao",
+        "email": "ana.rao@example.com",
+        "password": "Student@123",
+        "mobileNumber": "9876543210",
+
+        "admissionNumber": "LAS2026014",
+        "gender": "FEMALE",
+        "dateOfBirth": "2012-06-15",
+        "joiningDate": "2026-09-07",
+        "photoUrl": null,
+
+        "parentFirstName": "Sure",
+        "parentLastName": "Rao",
+        "parentUsername": "sure.rao",
+        "parentEmail": "sure.rao@example.com",
+        "parentPassword": "Parent@122",
+        "parentMobileNumber": "9988776655",
+        "occupation": "Engineer",
+        "address": "Rajajinagar, Bengaluru"
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODc5NTk0MiwiZXhwIjoxNzg4ODgyMzQyfQ.vUWvscbMCs1GaDy9SaXRrE_N0zCbGT6p2mHI-EcYuiR2DMRUGWcqd7v-Ua8p5DTBYW0T1bW0YhVRrw7iS1vJhA
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

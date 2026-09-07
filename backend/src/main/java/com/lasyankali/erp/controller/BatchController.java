@@ -67,4 +67,44 @@ public class BatchController {
 
 	    return ResponseEntity.ok(batch);
 	}
+	
+	@PostMapping("/{batchId}/teachers/{teacherId}")
+	public ResponseEntity<Void> assignTeacherToBatch(
+	        @PathVariable Long batchId,
+	        @PathVariable Long teacherId) {
+
+	    batchService.assignTeacherToBatch(batchId, teacherId);
+
+	    return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping("/{batchId}/teachers/{teacherId}")
+	public ResponseEntity<Void> removeTeacherFromBatch(
+	        @PathVariable Long batchId,
+	        @PathVariable Long teacherId) {
+
+	    batchService.deleteTeacher(batchId, teacherId);
+
+	    return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/{batchId}/students/{studentId}")
+	public ResponseEntity<Void> assignStudentToBatch(
+	        @PathVariable Long batchId,
+	        @PathVariable Long studentId) {
+
+	    batchService.assignStudentToBatch(batchId, studentId);
+
+	    return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping("/{batchId}/students/{studentId}")
+	public ResponseEntity<Void> removeStudentFromBatch(
+	        @PathVariable Long batchId,
+	        @PathVariable Long studentId) {
+
+	    batchService.deleteStudent(batchId, studentId);
+
+	    return ResponseEntity.noContent().build();
+	}
 }
