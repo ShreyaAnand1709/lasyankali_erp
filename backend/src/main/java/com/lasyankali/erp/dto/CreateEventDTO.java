@@ -2,7 +2,6 @@ package com.lasyankali.erp.dto;
 
 import java.time.LocalDate;
 
-import com.lasyankali.erp.entity.enums.EventStatus;
 import com.lasyankali.erp.entity.enums.EventType;
 
 public class CreateEventDTO {
@@ -12,9 +11,8 @@ public class CreateEventDTO {
 	private LocalDate eventDate;
 	private String venue;
 	private String description;
-	private EventStatus status;
 	public CreateEventDTO(String eventCode, String eventName, EventType eventType, LocalDate eventDate, String venue,
-			String description, EventStatus status) {
+			String description) {
 		super();
 		this.eventCode = eventCode;
 		this.eventName = eventName;
@@ -22,7 +20,6 @@ public class CreateEventDTO {
 		this.eventDate = eventDate;
 		this.venue = venue;
 		this.description = description;
-		this.status = status;
 	}
 	public CreateEventDTO() {
 		super();
@@ -62,11 +59,5 @@ public class CreateEventDTO {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public EventStatus getStatus() {
-		return status;
-	}
-	public void setStatus(EventStatus status) {
-		this.status = status;
 	}
 }

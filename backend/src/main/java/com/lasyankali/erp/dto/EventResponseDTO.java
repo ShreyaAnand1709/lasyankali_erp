@@ -41,9 +41,6 @@ public class EventResponseDTO {
 	public String getEventCode() {
 		return eventCode;
 	}
-	public void setEvent_code(String eventCode) {
-		this.eventCode = eventCode;
-	}
 	public String getEventName() {
 		return eventName;
 	}
