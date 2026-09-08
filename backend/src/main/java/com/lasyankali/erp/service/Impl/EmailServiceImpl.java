@@ -1,9 +1,11 @@
-package com.lasyankali.erp.service;
+package com.lasyankali.erp.service.Impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import com.lasyankali.erp.service.EmailService;
 
 @Service
 public class EmailServiceImpl implements EmailService{
