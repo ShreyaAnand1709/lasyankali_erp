@@ -1,5 +1,6 @@
 package com.lasyankali.erp.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,7 @@ import com.lasyankali.erp.entity.Event;
 public interface EventRepository extends JpaRepository<Event, Long>{
 	boolean existsByEventCode(String eventCode);
 	Optional<Event> findByEventCode(String eventCode);
-	Optional<Event> findByEventDate(String eventCode);
+	List<Event> findByEventDate(LocalDate date);
 	@Query("""
 		    SELECT e
 		    FROM Event e
