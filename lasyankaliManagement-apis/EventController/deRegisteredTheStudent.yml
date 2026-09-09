@@ -1,0 +1,18 @@
+info:
+  name: deRegisteredTheStudent
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: http://localhost:8080/api/events/2/student/me
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWh1bC5zaGFybWEiLCJpYXQiOjE3ODg5NDY3MjUsImV4cCI6MTc4OTAzMzEyNX0.6qydKk5wViP6TeKxGyUxGKSAGVnx1oda5Go4crppqzxVtZshDkfjbRUUnZdTiw1Bk-7bzdmKSztYrX5sGlOjqQ
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

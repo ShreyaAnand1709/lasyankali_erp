@@ -1,0 +1,30 @@
+info:
+  name: getEventById
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: http://localhost:8080/api/events/1
+  body:
+    type: json
+    data: |-
+      {
+        "eventCode": "EVT-2026-001",
+        "eventName": "Medai Dance Performance",
+        "eventType": "PERFORMANCE",
+        "eventDate": "2026-10-15",
+        "venue": "Medai Arts Auditorium",
+        "description": "Competetions performance featuring students from all batches.",
+        "status":"ONGOING"
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODkzMTAwMSwiZXhwIjoxNzg5MDE3NDAxfQ.fm4pTM4BfwRpTT_a-CNbWn0uItcJRWZsMm2A6n95jziz0GZyZxN51ofmLPqLOQR4b9Pek8XLudLfOhZHBJcZiQ
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

@@ -46,6 +46,7 @@ create table roles (
     add column last_name varchar(25)
     after first_name;
     
-    desc users
+    desc users;
+    select * from users;
     
     

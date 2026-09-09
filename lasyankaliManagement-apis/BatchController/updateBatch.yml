@@ -1,11 +1,23 @@
 info:
-  name: getBatchById
+  name: updateBatch
   type: http
   seq: 8
 
 http:
-  method: GET
+  method: PUT
   url: http://localhost:8080/api/batches/1
+  body:
+    type: json
+    data: |-
+      {
+        "batchName": "Music Junior Batch",
+        "disciplines": "VOCAL",
+        "level": "BEGINNER",
+        "startTime": "18:30:00",
+        "endTime": "19:30:00",
+        "capacity": 15,
+        "status": "ACTIVE"
+      }
   auth:
     type: bearer
     token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODc5NTk0MiwiZXhwIjoxNzg4ODgyMzQyfQ.vUWvscbMCs1GaDy9SaXRrE_N0zCbGT6p2mHI-EcYuiR2DMRUGWcqd7v-Ua8p5DTBYW0T1bW0YhVRrw7iS1vJhA

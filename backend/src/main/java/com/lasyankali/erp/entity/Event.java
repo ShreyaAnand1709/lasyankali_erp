@@ -1,6 +1,8 @@
 package com.lasyankali.erp.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import com.lasyankali.erp.entity.enums.EventStatus;
 import com.lasyankali.erp.entity.enums.EventType;
 
@@ -45,13 +47,13 @@ public class Event {
 	private EventStatus status; 
 	
 	@Column(name="created_at")
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 	
 	@Column(name="updated_at")
-	private LocalDate updatedAt;
+	private LocalDateTime updatedAt;
 
 	public Event(Long eventId, String eventCode, String eventName, EventType eventType, LocalDate eventDate, String venue,
-			String description, EventStatus status, LocalDate createdAt, LocalDate updatedAt) {
+			String description, EventStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		super();
 		this.eventId = eventId;
 		this.eventCode = eventCode;
@@ -133,19 +135,19 @@ public class Event {
 		this.status = status;
 	}
 
-	public LocalDate getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDate createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public LocalDate getUpdatedAt() {
+	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(LocalDate updatedAt) {
+	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

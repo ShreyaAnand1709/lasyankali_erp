@@ -43,3 +43,24 @@ CREATE TABLE payments (
         REFERENCES fees(fee_id)
 
 );
+
+CREATE TABLE fee_rates (
+    fee_rate_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    batch_level ENUM('BEGINNER', 'INTERMEDIATE', 'ADVANCED')
+        NOT NULL UNIQUE,
+    monthly_amount DECIMAL(10,2) NOT NULL,
+    currency CHAR(3) NOT NULL DEFAULT 'INR'
+);
+
+INSERT INTO fee_rates (batch_level, monthly_amount)
+VALUES
+    ('BEGINNER', 500.00),
+    ('INTERMEDIATE', 900.00),
+    ('ADVANCED', 1200.00);
+    
+SELECT COUNT(*) AS existing_fees FROM fees;
+
+ALTER TABLE fees
+ADD COLUMN billing_month DATE NOT NULL,
+ADD CONSTRAINT uk_fee_student_batch_month
+    UNIQUE (student_id, batch_id, billing_month);

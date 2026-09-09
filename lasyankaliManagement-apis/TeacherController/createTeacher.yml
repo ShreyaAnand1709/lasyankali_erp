@@ -1,7 +1,7 @@
 info:
   name: createTeacher
   type: http
-  seq: 12
+  seq: 1
 
 http:
   method: POST

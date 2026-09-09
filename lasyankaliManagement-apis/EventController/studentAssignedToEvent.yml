@@ -1,0 +1,18 @@
+info:
+  name: studentAssignedToEvent
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://localhost:8080/api/events/2/student/me
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmEucmFvIiwiaWF0IjoxNzg4OTQ5NzQyLCJleHAiOjE3ODkwMzYxNDJ9.GstWRHsgugXqOAm91yDSua76Cnp7CeohGSt6ABIjBQPN9I1sTdhrgpsm-WCtufdwydm4_TYOj6eiWVZ0M5vzSg
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

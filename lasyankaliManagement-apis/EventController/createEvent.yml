@@ -1,0 +1,29 @@
+info:
+  name: createEvent
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/events
+  body:
+    type: json
+    data: |-
+      {
+        "eventCode": "EVT-2026-002",
+        "eventName": "Classical Dance Workshop",
+        "eventType": "WORKSHOP",
+        "eventDate": "2026-10-20",
+        "venue": "Lasyankali Arts Studio",
+        "description": "A workshop covering classical dance techniques and expressions."
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODkzMTAwMSwiZXhwIjoxNzg5MDE3NDAxfQ.fm4pTM4BfwRpTT_a-CNbWn0uItcJRWZsMm2A6n95jziz0GZyZxN51ofmLPqLOQR4b9Pek8XLudLfOhZHBJcZiQ
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

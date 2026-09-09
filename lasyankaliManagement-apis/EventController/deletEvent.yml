@@ -1,0 +1,18 @@
+info:
+  name: deletEvent
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: http://localhost:8080/api/events/1
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODkzMTAwMSwiZXhwIjoxNzg5MDE3NDAxfQ.fm4pTM4BfwRpTT_a-CNbWn0uItcJRWZsMm2A6n95jziz0GZyZxN51ofmLPqLOQR4b9Pek8XLudLfOhZHBJcZiQ
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

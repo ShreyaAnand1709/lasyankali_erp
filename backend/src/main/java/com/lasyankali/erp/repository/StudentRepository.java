@@ -12,6 +12,7 @@ import com.lasyankali.erp.entity.enums.Status;
 public interface StudentRepository extends JpaRepository<Student, Long>{
 	Optional<Student> findByAdmissionNumber(String admissionNumber);
 	List<Student> findByStatus(Status status);
+	Optional<Student> findByUser_UserName(String userName);
 		@Query("""
 			    SELECT s
 	    FROM Student s

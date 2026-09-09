@@ -3,6 +3,7 @@ package com.lasyankali.erp.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -64,22 +65,26 @@ public class EventController {
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<EventResponseDTO>> searchBatches(
+	public ResponseEntity<List<EventResponseDTO>> searchEvents(
 	        @RequestParam String keyword) {
 	    List<EventResponseDTO> response = eventService.searchEvent(keyword);
 	    return ResponseEntity.ok(response);
 	}
 	
-	@PostMapping("{eventId}/student/{studentId}")
-	public ResponseEntity<EventRegistrationDTO> registerForEvent(@PathVariable Long eventId, @PathVariable Long studentId) {
-		EventRegistrationDTO response = eventRegService.registerEvent(eventId, studentId);
+	@PostMapping("{eventId}/student/me")
+	public ResponseEntity<EventRegistrationDTO> registerForEvent(@PathVariable Long eventId, Authentication authentication) {
+		String username = authentication.getName();
+
+	    EventRegistrationDTO response =
+	            eventRegService.registerEvent(eventId, username);
 		return ResponseEntity.ok(response);
 		
 	}
 	
 	@DeleteMapping("{eventId}/student/{studentId}")
-	public ResponseEntity deRegisterForEvent(@PathVariable Long eventId, @PathVariable Long studentId) {
-		eventRegService.deregisterEvent(eventId, studentId);
+	public ResponseEntity deRegisterForEvent(@PathVariable Long eventId, Authentication authentication ) {
+		String username = authentication.getName();
+		eventRegService.deregisterEvent(eventId, username);
 		return ResponseEntity.ok("De registered");
 	}
 	

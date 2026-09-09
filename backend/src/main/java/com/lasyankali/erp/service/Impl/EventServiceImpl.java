@@ -1,9 +1,11 @@
 package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.lasyankali.erp.dto.CreateEventDTO;
@@ -27,6 +29,7 @@ public class EventServiceImpl implements EventService{
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ADMIN')")
 	public void createEvent(CreateEventDTO createEventDTO) {
 		// TODO Auto-generated method stub
 		if(eventRepository.existsByEventCode(createEventDTO.getEventCode())) {
@@ -40,12 +43,13 @@ public class EventServiceImpl implements EventService{
 		event.setVenue(createEventDTO.getVenue());
 		event.setDescription(createEventDTO.getDescription());
 		event.setStatus(EventStatus.PLANNED);
-		event.setCreatedAt(LocalDate.now());
-		event.setUpdatedAt(LocalDate.now());
+		event.setCreatedAt(LocalDateTime.now());
+		event.setUpdatedAt(LocalDateTime.now());
 		eventRepository.save(event);
 	}
 
 	@Override
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT','PARENT')")
 	public List<EventResponseDTO> getAllEvents() {
 		List<Event> events = eventRepository.findAll();
 		List<EventResponseDTO> response = new ArrayList<>();
@@ -57,6 +61,7 @@ public class EventServiceImpl implements EventService{
 	}
 
 	@Override
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public EventResponseDTO getEventById(Long eventId) {
 		// TODO Auto-generated method stub
 		Event event = eventRepository.findById(eventId).
@@ -68,6 +73,7 @@ public class EventServiceImpl implements EventService{
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ADMIN')")
 	public EventResponseDTO updateEventById(Long eventId, UpdateEventDTO updateEventDTO) {
 		Event event = eventRepository.findById(eventId).
 				orElseThrow(
@@ -78,24 +84,26 @@ public class EventServiceImpl implements EventService{
 		event.setVenue(updateEventDTO.getVenue());
 		event.setDescription(updateEventDTO.getDescription());
 		event.setStatus(updateEventDTO.getStatus());
-		event.setUpdatedAt(LocalDate.now());
+		event.setUpdatedAt(LocalDateTime.now());
 		eventRepository.save(event);
 		EventResponseDTO response = eventMapper.eventMapper(event);
 		return response;
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ADMIN')")
 	public void deleteEvent(Long eventId) {
 		// TODO Auto-generated method stub
 		Event event = eventRepository.findById(eventId).
 				orElseThrow(
 						()-> new RuntimeException("Event doesnt exist"));
 		event.setStatus(EventStatus.CANCELLED);
-		event.setUpdatedAt(LocalDate.now());
+		event.setUpdatedAt(LocalDateTime.now());
 		eventRepository.save(event);
 	}
 
 	@Override
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT','PARENT')")
 	public List<EventResponseDTO> searchEvent(String keyword) {
 		List<Event> eventList = eventRepository.searchByNameOrVenue(keyword);
 		List<EventResponseDTO> response = new ArrayList<>();
@@ -107,6 +115,7 @@ public class EventServiceImpl implements EventService{
 	}
 
 	@Override
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT','PARENT')")
 	public List<EventResponseDTO> getEventByDate(LocalDate date) {
 		// TODO Auto-generated method stub
 		List<Event> eventList = eventRepository.findByEventDate(date);

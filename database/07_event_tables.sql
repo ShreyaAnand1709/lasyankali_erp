@@ -51,4 +51,19 @@ CREATE TABLE event_registrations (
         UNIQUE(event_id, student_id)
 
 );
+select * from events;
+select * from event_registrations;
 
+SELECT er.*
+FROM event_registrations er
+JOIN students s ON s.student_id = er.student_id
+JOIN users u ON u.user_id = s.user_id
+WHERE u.email = 'sakshiandewadikar@gmail.com'
+  AND er.event_id = 2;
+  
+  DELETE er
+FROM event_registrations er
+JOIN students s ON s.student_id = er.student_id
+JOIN users u ON u.user_id = s.user_id
+WHERE u.email = 'sakshiandewadikar@gmail.com'
+  AND er.event_id = 2;

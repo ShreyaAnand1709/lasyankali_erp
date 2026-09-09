@@ -68,3 +68,5 @@ ALTER TABLE batch_students
 MODIFY status enum('ACTIVE','COMPLETED','DROPPED');
 
 select * from batches;
+select * from batch_students;
+select * from batch_teacher;
