@@ -2,6 +2,9 @@ package com.lasyankali.erp.entity;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.lasyankali.erp.entity.enums.BatchLevel;
 
 import jakarta.persistence.Column;
@@ -25,7 +28,8 @@ public class FeeRate {
 	private BatchLevel batchLevel;
 	@Column(name="monthly_amount", nullable=false, precision=10, scale=2)
 	private BigDecimal monthlyAmount;
-	@Column(name="currency", nullable = false, length = 3)
+	@JdbcTypeCode(SqlTypes.CHAR)
+	@Column(name = "currency", length = 3, nullable = false)
 	private String currency;
 	public FeeRate(Long feeRateId, BatchLevel batchLevel, BigDecimal monthlyAmount, String currency) {
 		super();

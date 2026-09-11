@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/api/events/2/student/me
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmEucmFvIiwiaWF0IjoxNzg4OTQ5NzQyLCJleHAiOjE3ODkwMzYxNDJ9.GstWRHsgugXqOAm91yDSua76Cnp7CeohGSt6ABIjBQPN9I1sTdhrgpsm-WCtufdwydm4_TYOj6eiWVZ0M5vzSg
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzYWtzaGkuc3R1ZGVudDAxIiwiaWF0IjoxNzg4OTYxNTY3LCJleHAiOjE3ODkwNDc5Njd9.wDQ3bQ4yRV6Xaru7Nmf_nJ5V5_KfPF8BwFEboo6xDfJLF7C1jSJVGz4RHblWzPZC44AA431kg0UAcZ_9TFCB-g
 
 settings:
   encodeUrl: true

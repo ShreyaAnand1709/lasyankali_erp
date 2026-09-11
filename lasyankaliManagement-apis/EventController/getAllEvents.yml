@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/api/events
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODkzMTAwMSwiZXhwIjoxNzg5MDE3NDAxfQ.fm4pTM4BfwRpTT_a-CNbWn0uItcJRWZsMm2A6n95jziz0GZyZxN51ofmLPqLOQR4b9Pek8XLudLfOhZHBJcZiQ
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzYWtzaGkuc3R1ZGVudDAxIiwiaWF0IjoxNzg4OTYxNTY3LCJleHAiOjE3ODkwNDc5Njd9.wDQ3bQ4yRV6Xaru7Nmf_nJ5V5_KfPF8BwFEboo6xDfJLF7C1jSJVGz4RHblWzPZC44AA431kg0UAcZ_9TFCB-g
 
 settings:
   encodeUrl: true
