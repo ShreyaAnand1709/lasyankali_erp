@@ -10,29 +10,29 @@ http:
     type: json
     data: |-
       {
-        "firstName": "Sakshi",
-        "lastName": "Andewadikar",
-        "username": "sakshi.student01",
-        "email": "sakshiandewadikar@gmail.com",
-        "password": "Student@Test2026!",
-        "mobileNumber": "9000000001",
-        "admissionNumber": "STU-2026-101",
+        "firstName": "Shreya",
+        "lastName": "Anand",
+        "username": "shreya1709202",
+        "email": "shreya1709202@gmail.com",
+        "password": "Shreya@2026",
+        "mobileNumber": "9876543210",
+        "admissionNumber": "LAS-2026-002",
         "gender": "FEMALE",
-        "dateOfBirth": "2005-06-15",
-        "joiningDate": "2026-09-09",
+        "dateOfBirth": "2002-09-17",
+        "joiningDate": "2026-09-15",
         "photoUrl": null,
-        "parentFirstName": "Sample",
-        "parentLastName": "Parent",
-        "parentUsername": "sakshi.parent01",
-        "parentEmail": "replace-with-parent-email@example.com",
-        "parentPassword": "Parent@Test2026!",
-        "parentMobileNumber": "9000000002",
-        "occupation": "Teacher",
-        "address": "Sample address"
+        "parentFirstName": "Anand",
+        "parentLastName": "Kumar",
+        "parentUsername": "shreya_parent_2026",
+        "parentEmail": "shreya1709202+parent@gmail.com",
+        "parentPassword": "Parent@2026",
+        "parentMobileNumber": "9876543211",
+        "occupation": "Business",
+        "address": "Pune, Maharashtra"
       }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODk2MTM4OSwiZXhwIjoxNzg5MDQ3Nzg5fQ.PUGKVU_-LfwawtHKsH-rDHecuho1249_oTyxLTzl0BdnKS-M342rfyPJ2Nv1uUgfxoI1leTi5sH4wufJwG25Aw
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4OTQ0NTg4NywiZXhwIjoxNzg5NTMyMjg3fQ.Xn_AFgdIaL9PecumJ73-JMfyxuymSJWT9aVa6d8tB_jl0NslxS6yAfnztzY5Ql4QcpdKC3E3kHVFnTo7Njmj9Q
 
 settings:
   encodeUrl: true

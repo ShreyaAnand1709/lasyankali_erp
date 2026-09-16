@@ -1,6 +1,7 @@
 package com.lasyankali.erp.security;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import java.util.Base64;
 import java.util.Date;
@@ -13,12 +14,16 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-	private static final String SECRET_KEY = "myVerySecureSecretKeyForLasyankaliERPProject123456";
+	private final String secret_key ;
+	public JwtService(@Value("${jwt.secret}")String secret_key) {
+		super();
+		this.secret_key = secret_key;
+	}
 	private static final long JWT_EXPIRATION = 1000*60*60*24;
 	
-	private Key signInKey() {
+	private SecretKey signInKey() {
 		byte[] keyBytes = Base64.getEncoder().
-				encode(SECRET_KEY.getBytes());
+				encode(secret_key.getBytes());
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
@@ -34,9 +39,7 @@ public class JwtService {
 	private Claims extractAllClaims(
 	        String token) {
 	    return Jwts.parser()
-	            .verifyWith(
-	                    (javax.crypto.SecretKey)
-	                            signInKey())
+	            .verifyWith(signInKey())
 	            .build()
 	            .parseSignedClaims(token)
 	           .getPayload();

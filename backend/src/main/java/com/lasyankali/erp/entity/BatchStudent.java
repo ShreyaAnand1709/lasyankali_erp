@@ -36,7 +36,7 @@ public class BatchStudent {
     private LocalDate enrollmentDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", nullable=false)
     private EnrollmentStatus status;
 
     @Column(name = "created_at")

@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/api/batches/1
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4ODc5NTk0MiwiZXhwIjoxNzg4ODgyMzQyfQ.vUWvscbMCs1GaDy9SaXRrE_N0zCbGT6p2mHI-EcYuiR2DMRUGWcqd7v-Ua8p5DTBYW0T1bW0YhVRrw7iS1vJhA
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4OTQ0NTg4NywiZXhwIjoxNzg5NTMyMjg3fQ.Xn_AFgdIaL9PecumJ73-JMfyxuymSJWT9aVa6d8tB_jl0NslxS6yAfnztzY5Ql4QcpdKC3E3kHVFnTo7Njmj9Q
 
 settings:
   encodeUrl: true

@@ -17,6 +17,7 @@ import com.lasyankali.erp.entity.BatchTeacher;
 import com.lasyankali.erp.entity.Student;
 import com.lasyankali.erp.entity.Teacher;
 import com.lasyankali.erp.entity.enums.BatchStatus;
+import com.lasyankali.erp.entity.enums.EnrollmentStatus;
 import com.lasyankali.erp.entity.enums.Status;
 import com.lasyankali.erp.mapper.BatchMapper;
 import com.lasyankali.erp.repository.BatchRepository;
@@ -254,6 +255,7 @@ public class BatchServiceImpl implements BatchService{
 		batchStudent.setBatch(batch);
 		batchStudent.setStudent(student);
 		batchStudent.setEnrollmentDate(LocalDate.now());
+		batchStudent.setStatus(EnrollmentStatus.ACTIVE);
 		batchStudent.setCreatedAt(LocalDateTime.now());
 		batchStudentRepository.save(batchStudent);	
 	}
