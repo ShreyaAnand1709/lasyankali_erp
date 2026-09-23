@@ -2,6 +2,7 @@ package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -79,6 +80,39 @@ public class FeeServiceImpl implements FeeService{
 		feeEntity.setUpdatedAt(LocalDateTime.now());
 		feeRepo.save(feeEntity);
 		return true;
+	}
+
+	@Override
+	@Transactional
+	public int generateMonthlyFees(LocalDate billingMonth) {
+		if(billingMonth == null) {
+			throw new IllegalArgumentException("Billing month cannot be null");
+		}
+		int counterFee = 0;
+		List<BatchStudent> activeStudent = batchStudRepo.findByStatus(EnrollmentStatus.ACTIVE);
+		for(BatchStudent stud : activeStudent) {
+			boolean generatedFee = generateMonthlyFee(stud.getStudent().getStudentId() , stud.getBatch().getBatchId(), billingMonth);
+			if(generatedFee) {
+				counterFee++;
+			}
+		}
+		return counterFee;
+	}
+
+	@Override
+	@Transactional
+	public int markOverDueFees(LocalDate currentDate) {
+		// TODO Auto-generated method stub
+		if(currentDate == null) {
+			throw new IllegalArgumentException("Current date cannot be null");
+		}
+		List<Fee> pendingFees = feeRepo.findByFeeStatusAndDueDateBefore(FeeStatus.PENDING, currentDate);
+		LocalDateTime now = LocalDateTime.now(); 
+		for(Fee pendFees : pendingFees) {
+			pendFees.setFeeStatus(FeeStatus.OVERDUE);
+			pendFees.setUpdatedAt(now);
+		}
+		return pendingFees.size();
 	}
 
 }
