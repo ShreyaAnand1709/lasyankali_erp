@@ -2,15 +2,19 @@ package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import com.lasyankali.erp.dto.FeeResponseDTO;
 import com.lasyankali.erp.entity.BatchStudent;
 import com.lasyankali.erp.entity.Fee;
 import com.lasyankali.erp.entity.FeeRate;
 import com.lasyankali.erp.entity.enums.EnrollmentStatus;
 import com.lasyankali.erp.entity.enums.FeeStatus;
+import com.lasyankali.erp.mapper.FeeMapper;
 import com.lasyankali.erp.repository.BatchStudentRepository;
 import com.lasyankali.erp.repository.FeeRateRepository;
 import com.lasyankali.erp.repository.FeeRepository;
@@ -23,12 +27,14 @@ public class FeeServiceImpl implements FeeService{
 	private final BatchStudentRepository batchStudRepo;
 	private final FeeRepository feeRepo;
 	private final FeeRateRepository feeRateRepo;
+	private final FeeMapper feeMapper;
 	
-	public FeeServiceImpl(BatchStudentRepository batchStudRepo, FeeRepository feeRepo, FeeRateRepository feeRateRepo) {
+	public FeeServiceImpl(BatchStudentRepository batchStudRepo, FeeRepository feeRepo, FeeRateRepository feeRateRepo,FeeMapper feeMapper) {
 		super();
 		this.batchStudRepo = batchStudRepo;
 		this.feeRepo = feeRepo;
 		this.feeRateRepo = feeRateRepo;
+		this.feeMapper = feeMapper;
 	}
 
 	@Override
@@ -113,6 +119,46 @@ public class FeeServiceImpl implements FeeService{
 			pendFees.setUpdatedAt(now);
 		}
 		return pendingFees.size();
+	}
+
+	@Override
+	@Transactional 
+	public List<FeeResponseDTO> getMyFees(String username) {
+		List<Fee> feeResponse = feeRepo.findByStudent_User_UserNameOrderByBillingMonthDesc(username);
+		List<FeeResponseDTO> finalResponse = new ArrayList<>();
+		for(Fee fee : feeResponse) {
+			FeeResponseDTO response = feeMapper.mapToFeeResponse(fee);
+			finalResponse.add(response);
+		}
+		return finalResponse;
+	}
+
+	@Override
+	@Transactional
+	@PreAuthorize("hasRole('ADMIN')")
+	public List<FeeResponseDTO> getAllFees() {
+		// TODO Auto-generated method stub
+		List<Fee> allFee = feeRepo.findAllByOrderByBillingMonthDesc();
+		List<FeeResponseDTO> feeMap = new ArrayList<>();
+		for(Fee eachFee: allFee) {
+			FeeResponseDTO mapResponse = feeMapper.mapToFeeResponse(eachFee);
+			feeMap.add(mapResponse);
+		}
+		return feeMap;
+	}
+
+	@Override
+	@Transactional
+	@PreAuthorize("hasAnyRole('ADMIN','PARENT')")
+	public List<FeeResponseDTO> getMyChildrenFees(String parentUsername) {
+		// TODO Auto-generated method stub
+		List<Fee> allFee = feeRepo.findByStudent_Parent_User_UserNameOrderByBillingMonthDesc(parentUsername);
+		List<FeeResponseDTO> feeMap = new ArrayList<>();
+		for(Fee eachFee: allFee) {
+			FeeResponseDTO mapResponse = feeMapper.mapToFeeResponse(eachFee);
+			feeMap.add(mapResponse);
+		}
+		return feeMap;
 	}
 
 }

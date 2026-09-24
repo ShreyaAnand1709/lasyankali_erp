@@ -64,3 +64,31 @@ ALTER TABLE fees
 ADD COLUMN billing_month DATE NOT NULL,
 ADD CONSTRAINT uk_fee_student_batch_month
     UNIQUE (student_id, batch_id, billing_month);
+    
+    SELECT
+    fee_id,
+    student_id,
+    batch_id,
+    fee_amount,
+    billing_month,
+    due_date,
+    fee_status,
+    created_at,
+    updated_at
+FROM fees
+WHERE student_id = 2
+  AND batch_id = 2;
+  
+  SELECT
+    INDEX_NAME,
+    NON_UNIQUE,
+    GROUP_CONCAT(
+        COLUMN_NAME
+        ORDER BY SEQ_IN_INDEX
+    ) AS indexed_columns
+FROM information_schema.statistics
+WHERE table_schema = DATABASE()
+  AND table_name = 'fees'
+GROUP BY INDEX_NAME, NON_UNIQUE;
+
+select * from fees;

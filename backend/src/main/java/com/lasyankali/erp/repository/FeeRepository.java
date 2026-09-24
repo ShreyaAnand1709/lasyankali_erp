@@ -14,4 +14,11 @@ public interface FeeRepository extends JpaRepository<Fee,Long>{
 	        Long batchId,
 	        LocalDate billingMonth);
 	List<Fee> findByFeeStatusAndDueDateBefore(FeeStatus feeStatus, LocalDate currentDate);
+	List<Fee> findByStudent_User_UserNameOrderByBillingMonthDesc(
+	        String username
+	);
+	List<Fee> findAllByOrderByBillingMonthDesc();
+	List<Fee> findByStudent_Parent_User_UserNameOrderByBillingMonthDesc(
+	        String username
+	);
 }
