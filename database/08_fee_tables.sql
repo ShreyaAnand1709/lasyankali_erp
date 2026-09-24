@@ -41,7 +41,6 @@ CREATE TABLE payments (
     CONSTRAINT fk_payment_fee
         FOREIGN KEY (fee_id)
         REFERENCES fees(fee_id)
-
 );
 
 CREATE TABLE fee_rates (
@@ -92,3 +91,5 @@ WHERE table_schema = DATABASE()
 GROUP BY INDEX_NAME, NON_UNIQUE;
 
 select * from fees;
+
+SHOW CREATE TABLE lasyankali_erp.payments;
