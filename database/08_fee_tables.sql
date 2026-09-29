@@ -92,4 +92,44 @@ GROUP BY INDEX_NAME, NON_UNIQUE;
 
 select * from fees;
 
+SELECT
+    INDEX_NAME,
+    NON_UNIQUE,
+    COLUMN_NAME,
+    SEQ_IN_INDEX
+FROM information_schema.statistics
+WHERE table_schema = 'lasyankali_erp'
+  AND table_name = 'payments'
+ORDER BY INDEX_NAME, SEQ_IN_INDEX;
 SHOW CREATE TABLE lasyankali_erp.payments;
+
+SELECT
+    fee_id,
+    student_id,
+    batch_id,
+    fee_amount,
+    billing_month,
+    due_date,
+    fee_status
+FROM lasyankali_erp.fees
+WHERE student_id = 9
+  AND batch_id = 2
+ORDER BY fee_id DESC;
+
+SELECT
+    payment_id,
+    fee_id,
+    amount,
+    currency,
+    provider_order_id,
+    provider_payment_id,
+    payment_status,
+    payment_date,
+    payment_method,
+    failure_reason
+FROM lasyankali_erp.payments
+WHERE payment_id = 1;
+
+SELECT fee_id, fee_amount, fee_status
+FROM lasyankali_erp.fees
+WHERE fee_id = 2;

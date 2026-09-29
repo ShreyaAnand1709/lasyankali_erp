@@ -73,3 +73,13 @@ MODIFY status ENUM('ACTIVE','INACTIVE');
 select * from parents;
 select * from students;
 select * from teachers;
+
+SELECT
+    batch_student_id,
+    student_id,
+    batch_id,
+    enrollment_date,
+    status
+FROM batch_students
+WHERE student_id = 9
+  AND batch_id = 2;
