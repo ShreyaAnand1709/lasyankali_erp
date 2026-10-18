@@ -66,22 +66,46 @@ public class AuthServiceImpl implements AuthService{
 	}
 	// building the login response now 
 	@Override
-	public LoginResponseDTO loginResponseDTO(LoginRequestDTO loginRequestDTO) {
-		User user = userRepository.findByUserName(
-				loginRequestDTO.getUsername()).
-				orElseThrow( () -> 
-				new RuntimeException("Invalid Username"));
-		
-		if(!passwordEncoder.matches(
-				loginRequestDTO.getPassword(), user.getPasswordHash())) {
-			throw new RuntimeException("Invalid Password");
-		}
-	   LoginResponseDTO response = new LoginResponseDTO();
-	   response.setToken(jwtService.generateToken(user.getUserName()));
-	   response.setUsername(user.getUserName());
-	   response.setRole(user.getRole().getRoleName());
-	   response.setMessage("Login Successful");
-	   return response;
+	public LoginResponseDTO loginResponseDTO(
+	        LoginRequestDTO loginRequestDTO) {
+
+	    if (loginRequestDTO == null
+	            || loginRequestDTO.getUsername() == null
+	            || loginRequestDTO.getUsername().isBlank()
+	            || loginRequestDTO.getPassword() == null
+	            || loginRequestDTO.getPassword().isBlank()) {
+
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.UNAUTHORIZED,
+	                "Invalid credentials or inactive account");
+	    }
+
+	    User user = userRepository.findByUserName(
+	                    loginRequestDTO.getUsername())
+	            .orElseThrow(() ->
+	                    new org.springframework.web.server.ResponseStatusException(
+	                            org.springframework.http.HttpStatus.UNAUTHORIZED,
+	                            "Invalid credentials or inactive account"));
+
+	    boolean passwordMatches = passwordEncoder.matches(
+	            loginRequestDTO.getPassword(),
+	            user.getPasswordHash());
+
+	    if (!passwordMatches
+	            || !Boolean.TRUE.equals(user.getIsActive())) {
+
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.UNAUTHORIZED,
+	                "Invalid credentials or inactive account");
+	    }
+
+	    LoginResponseDTO response = new LoginResponseDTO();
+	    response.setToken(jwtService.generateToken(user.getUserName()));
+	    response.setUsername(user.getUserName());
+	    response.setRole(user.getRole().getRoleName());
+	    response.setMessage("Login Successful");
+
+	    return response;
 	}
 
 }

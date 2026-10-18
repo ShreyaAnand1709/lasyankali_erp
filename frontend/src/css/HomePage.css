@@ -1,0 +1,293 @@
+.home-page {
+  --burgundy: #421524;
+  --cream: #f7f2e9;
+  --gold: #dcc397;
+
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--cream);
+  color: var(--burgundy);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.home-page,
+.home-page * {
+  box-sizing: border-box;
+}
+
+/* Compact header */
+
+.home-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 12px clamp(20px, 4vw, 64px);
+  border-bottom: 1px solid rgb(66 21 36 / 10%);
+}
+
+.home-logo-link {
+  display: inline-flex;
+  justify-self: start;
+}
+
+.home-logo {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.home-title {
+  color: var(--burgundy);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.8vw, 1.45rem);
+  font-weight: 400;
+  text-decoration: none;
+  text-align: center;
+}
+
+.home-title span {
+  font-style: italic;
+}
+
+.home-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 180ms ease;
+}
+
+.home-login-header {
+  justify-self: end;
+  padding: 8px 18px;
+  background: var(--burgundy);
+  color: var(--cream);
+}
+
+.home-login-header:hover {
+  background: #603044;
+}
+
+/* Hero fills the remaining screen height */
+
+.home-main {
+  display: flex;
+  min-height: 0;
+}
+
+.home-hero {
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 0;
+  padding: 24px;
+  overflow: hidden;
+  background: #260c15;
+}
+
+.home-hero-image,
+.home-hero-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-hero-image {
+  z-index: -2;
+  background-image: var(--hero-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1);
+  transform-origin: var(--cursor-x) var(--cursor-y);
+  transition: transform 800ms ease;
+}
+
+.home-hero-overlay {
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgb(29 7 16 / 52%),
+    rgb(29 7 16 / 74%)
+  );
+}
+
+.home-hero-content {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+  color: var(--cream);
+}
+
+.home-eyebrow {
+  margin: 0 0 20px;
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.home-hero h1 {
+  margin: 0 0 24px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.home-hero h1 span {
+  display: block;
+  margin-top: 10px;
+  color: var(--gold);
+  font-size: 0.74em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.home-description {
+  max-width: 550px;
+  margin: 0 auto 12px;
+  color: #eee5db;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.home-login-hero {
+  margin-top: 18px;
+  background: var(--gold);
+  color: #35111e;
+}
+
+.home-login-hero:hover {
+  background: #ead5b2;
+}
+
+/* Quiet footer */
+
+.home-footer {
+  padding: 12px 20px;
+  text-align: center;
+}
+
+.home-footer p {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.home-footer .home-footer-note {
+  margin-top: 3px;
+  color: #77616a;
+  font-size: 0.65rem;
+}
+
+.home-page a:focus-visible {
+  outline: 2px solid #b28a50;
+  outline-offset: 4px;
+}
+
+/* Subtle cursor zoom */
+
+@media (hover: hover) and (pointer: fine) {
+  .home-hero:hover .home-hero-image {
+    transform: scale(1.035);
+  }
+}
+
+/* Smaller screens */
+
+@media (max-width: 600px) {
+  .home-header {
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .home-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .home-title {
+    font-size: 1rem;
+  }
+
+  .home-title span {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.85rem;
+  }
+
+  .home-login-header {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+
+  .home-hero {
+    padding: 20px;
+  }
+
+  .home-description {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+}
+
+/* Compact layout on short desktop windows */
+
+@media (max-height: 650px) and (min-width: 601px) {
+  .home-header {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .home-eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .home-hero h1 {
+    margin-bottom: 16px;
+    font-size: 2rem;
+  }
+
+  .home-description {
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+  }
+
+  .home-login-hero {
+    margin-top: 10px;
+  }
+
+  .home-footer {
+    padding: 8px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-image,
+  .home-login {
+    transition: none;
+  }
+
+  .home-hero:hover .home-hero-image {
+    transform: none;
+  }
+}

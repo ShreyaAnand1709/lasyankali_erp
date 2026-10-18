@@ -1,6 +1,7 @@
 package com.lasyankali.erp.dto;
 
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter
@@ -21,6 +22,7 @@ public class LoginResponseDTO {
 	public String getRole() {
 		return role;
 	}
+	@JsonIgnore
 	public void setRole(String role) {
 		this.role = role;
 	}

@@ -28,39 +28,58 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User createUser(CreateUserDTO createUserDto) {
-		Optional<User> existingUsername = userRepository.findByUserName(
-				createUserDto.getUsername());
-		if(existingUsername.isPresent()) {
-			throw new RuntimeException("Username already exists");
-		}
-		
-		Optional<User> exisitngEmail = userRepository.findByEmail(
-				createUserDto.getEmail());
-		if(exisitngEmail.isPresent()) {
-			throw new RuntimeException("Email already exists");
-		}
-		
-		Role role = roleRepository.
-				findByRoleName("STUDENT")
-				.orElseThrow(
-						()-> new RuntimeException("Role Not found"));
-		
-		User user = new User();
-		user.setFirstName(createUserDto.getFirstName());
-		user.setLastName(createUserDto.getLastName());
-		user.setUserName(createUserDto.getUsername());
-		user.setEmail(createUserDto.getEmail());
-		user.setPasswordHash(
-				passwordEncoder.encode(createUserDto.getPassword()));
-		user.setMobileNumber(createUserDto.getMobileNumber());
-		user.setRole(role);
-		user.setIsActive(true);
-		user.setCreatedAt(LocalDateTime.now());
-		user.setUpdatedAt(LocalDateTime.now());
-		
-		User savedUser = userRepository.save(user);
-		return savedUser;
+	    if (createUserDto == null) {
+	        throw new IllegalArgumentException(
+	                "User details cannot be null");
+	    }
+
+	    String roleName = createUserDto.getRoleName();
+
+	    if (roleName == null || roleName.isBlank()) {
+	        throw new IllegalArgumentException(
+	                "Role name is required");
+	    }
+
+	    roleName = roleName.trim()
+	            .toUpperCase(java.util.Locale.ROOT);
+
+	    if (!java.util.Set.of("STUDENT", "TEACHER", "PARENT")
+	            .contains(roleName)) {
+	        throw new IllegalArgumentException(
+	                "Unsupported role for this workflow");
+	    }
+
+	    if (userRepository.findByUserName(
+	            createUserDto.getUsername()).isPresent()) {
+	        throw new IllegalArgumentException(
+	                "Username already exists");
+	    }
+
+	    if (userRepository.findByEmail(
+	            createUserDto.getEmail()).isPresent()) {
+	        throw new IllegalArgumentException(
+	                "Email already exists");
+	    }
+
+	    Role role = roleRepository.findByRoleName(roleName)
+	            .orElseThrow(() -> new IllegalStateException(
+	                    "Requested role is not configured"));
+
+	    LocalDateTime now = LocalDateTime.now();
+
+	    User user = new User();
+	    user.setFirstName(createUserDto.getFirstName());
+	    user.setLastName(createUserDto.getLastName());
+	    user.setUserName(createUserDto.getUsername());
+	    user.setEmail(createUserDto.getEmail());
+	    user.setPasswordHash(
+	            passwordEncoder.encode(createUserDto.getPassword()));
+	    user.setMobileNumber(createUserDto.getMobileNumber());
+	    user.setRole(role);
+	    user.setIsActive(true);
+	    user.setCreatedAt(now);
+	    user.setUpdatedAt(now);
+
+	    return userRepository.save(user);
 	}
-	
-	
 }
