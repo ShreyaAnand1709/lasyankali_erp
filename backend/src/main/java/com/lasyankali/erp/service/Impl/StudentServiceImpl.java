@@ -198,5 +198,20 @@ public class StudentServiceImpl implements StudentService{
 		    return students.stream()
 		            .map(mapStudent::mapToResponse)
 		            .toList();
+	}
+
+	@Override
+	@Transactional
+	@PreAuthorize("hasRole('STUDENT') and #p0 == authentication.name")
+	public StudentResponseDTO getMyProfile(String username) {
+		// TODO Auto-generated method stub
+		Student student = studentRepository
+	            .findByUser_UserName(username)
+	            .orElseThrow(() ->
+	                    new org.springframework.web.server.ResponseStatusException(
+	                            org.springframework.http.HttpStatus.NOT_FOUND,
+	                            "No student profile is linked to your account"));
+
+	    return mapStudent.mapToResponse(student);
 	}	
 }

@@ -19,4 +19,5 @@ public interface TeacherService {
     void deleteTeacher(Long teacherId);
 
     List<TeacherResponseDTO> searchTeachers(String keyword);
+    TeacherResponseDTO getMyProfile(String username);
 }

@@ -161,4 +161,17 @@ public class TeacherServiceImpl implements TeacherService{
 	                .toList();
 	}
 
+	@Override
+	public TeacherResponseDTO getMyProfile(String username) {
+		// TODO Auto-generated method stub
+		Teacher teacher = teacherRepository
+	            .findByUser_UserName(username)
+	            .orElseThrow(() ->
+	                    new org.springframework.web.server.ResponseStatusException(
+	                            org.springframework.http.HttpStatus.NOT_FOUND,
+	                            "No teacher profile is linked to your account"));
+
+	    return teacherMapper.mapToResponse(teacher);
+	}
+
 }

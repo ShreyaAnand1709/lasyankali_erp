@@ -27,4 +27,5 @@ public interface TeacherRepository extends JpaRepository<Teacher,Long>{
 		    """)
 		List<Teacher> searchTeachers(@Param("keyword") String keyword,
 		                             @Param("status") Status status);
+		Optional<Teacher> findByUser_UserName(String username);
 }

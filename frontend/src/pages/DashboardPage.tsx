@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { logout } from "../api/auth";
 import { getDashboardRecords } from "../api/dashboard";
+import ProfileOverview from "../components/ProfileOverview";
 
 import type {
   DashboardRecord,
@@ -269,9 +270,12 @@ export default function DashboardPage() {
           {section === "overview" ? (
             <>
               <p className="role-introduction">
-                Welcome back, {user.username}. Access your academy
-                information from your workspace.
+                Your personal details and academy information, together.
               </p>
+
+              <ProfileOverview />
+
+<h2 className="role-section-title">Your workspace</h2>
 
               <div className="role-shortcuts">
                 {menu

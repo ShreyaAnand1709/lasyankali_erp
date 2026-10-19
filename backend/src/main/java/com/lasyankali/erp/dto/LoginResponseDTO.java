@@ -26,6 +26,7 @@ public class LoginResponseDTO {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	@JsonIgnore
 	public String getToken() {
 		return token;
 	}

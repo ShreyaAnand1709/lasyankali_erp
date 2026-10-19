@@ -18,4 +18,6 @@ public interface ParentService {
 	List<ParentResponseDTO> searchParents(String keyword);
 	
 	List<ParentResponseDTO> getAllParents();
+	
+	ParentResponseDTO getMyProfile(String username);
 }

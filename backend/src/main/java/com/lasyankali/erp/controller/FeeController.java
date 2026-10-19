@@ -72,11 +72,11 @@ public class FeeController {
 	} 
 	
 	@GetMapping("/my-children")
-	@PreAuthorize("hasAnyRole('ADMIN','STUDENT')")
-	public ResponseEntity<List<FeeResponseDTO>> getChildFee(Authentication auth) {
-		List<FeeResponseDTO> response =
-	            feeService.getMyChildrenFees(auth.getName());
+	@PreAuthorize("hasRole('PARENT')")
+	public ResponseEntity<List<FeeResponseDTO>> getChildFee(
+	        Authentication auth) {
 
-	    return ResponseEntity.ok(response);
+	    return ResponseEntity.ok(
+	            feeService.getMyChildrenFees(auth.getName()));
 	}
 }

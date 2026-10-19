@@ -218,3 +218,25 @@
     padding: 18px;
   }
 }
+
+.role-section-title {
+  margin: 30px 0 16px;
+  color: #421524;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.role-shortcuts {
+  margin-top: 0;
+  gap: 14px;
+}
+
+.role-shortcuts button {
+  min-height: 78px;
+  padding: 20px;
+  font-size: 13px;
+}
+
+.role-main h1 {
+  font-size: 28px;
+}

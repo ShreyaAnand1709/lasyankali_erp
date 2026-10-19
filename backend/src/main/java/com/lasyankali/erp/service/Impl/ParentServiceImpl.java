@@ -132,4 +132,16 @@ public class ParentServiceImpl implements ParentService{
 	            .toList();
 	}
 
+	@Override
+	public ParentResponseDTO getMyProfile(String username) {
+		Parents parent = repo
+	            .findByUser_UserName(username)
+	            .orElseThrow(() ->
+	                    new org.springframework.web.server.ResponseStatusException(
+	                            org.springframework.http.HttpStatus.NOT_FOUND,
+	                            "No parent profile is linked to your account"));
+
+	    return mapper.mapToResponse(parent);
+	}
+
 }

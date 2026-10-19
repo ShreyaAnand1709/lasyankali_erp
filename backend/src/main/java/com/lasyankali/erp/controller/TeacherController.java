@@ -3,6 +3,7 @@ package com.lasyankali.erp.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,5 +85,15 @@ public class TeacherController {
 	            teacherService.searchTeachers(keyword);
 
 	    return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/me")
+	public ResponseEntity<TeacherResponseDTO> getMyProfile(
+	        Authentication authentication) {
+
+	    return ResponseEntity.ok()
+	            .header("Cache-Control", "no-store")
+	            .body(teacherService.getMyProfile(
+	                    authentication.getName()));
 	}
 }

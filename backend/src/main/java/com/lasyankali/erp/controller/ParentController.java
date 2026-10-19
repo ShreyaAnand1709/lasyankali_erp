@@ -2,6 +2,7 @@ package com.lasyankali.erp.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,5 +68,15 @@ public class ParentController {
     @GetMapping
     public List<ParentResponseDTO> getAllParents() {
         return parentService.getAllParents();
+    }
+    
+    @GetMapping("/me")
+    public org.springframework.http.ResponseEntity<ParentResponseDTO> getMyProfile(
+            Authentication authentication) {
+
+        return org.springframework.http.ResponseEntity.ok()
+                .header("Cache-Control", "no-store")
+                .body(parentService.getMyProfile(
+                        authentication.getName()));
     }
 }
