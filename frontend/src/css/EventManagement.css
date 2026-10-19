@@ -1,0 +1,26 @@
+.event-description-field {
+  grid-column: 1 / -1;
+}
+
+.event-description-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #c9beb5;
+  border-radius: 5px;
+  background: #fffcf7;
+  color: #421524;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+  resize: vertical;
+}
+
+.event-description-field textarea:focus-visible {
+  outline: 2px solid #aa824d;
+  outline-offset: 3px;
+}
+
+.event-description {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

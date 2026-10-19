@@ -1,0 +1,134 @@
+.event-participants {
+  margin-top: 32px;
+  color: #421524;
+}
+
+.event-participants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.event-participants-header h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.event-participants-header p {
+  margin: 0;
+  color: #786a6e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.event-participants-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e2d8cc;
+  border-radius: 8px;
+  background: #fffcf7;
+}
+
+.event-participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.event-participants-table caption {
+  padding: 16px;
+  color: #786a6e;
+  font-size: 12px;
+  text-align: left;
+}
+
+.event-participants-table th,
+.event-participants-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e2d8cc;
+}
+
+.event-participants-table th {
+  background: #f0e8dc;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.event-participants-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.event-participants-table select {
+  min-width: 150px;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid #c9beb5;
+  border-radius: 5px;
+  background: #fffcf7;
+  color: #421524;
+  font: inherit;
+}
+
+.event-participants-save,
+.event-participants-refresh {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #421524;
+  border-radius: 5px;
+  background: #421524;
+  color: #f7f2e9;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.event-participants-refresh {
+  border-color: #c9beb5;
+  background: transparent;
+  color: #421524;
+}
+
+.event-participants button:disabled,
+.event-participants select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.event-participants-info,
+.event-participants-success,
+.event-participants-error {
+  margin: 0 0 18px;
+  padding: 14px;
+  border: 1px solid;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.event-participants-info {
+  border-color: #ddc9aa;
+  background: #f5ebd9;
+  color: #715334;
+}
+
+.event-participants-success {
+  border-color: #c5d4c3;
+  background: #edf4e9;
+  color: #365437;
+}
+
+.event-participants-error {
+  border-color: #d6a6a6;
+  background: #fff0ed;
+  color: #862a32;
+}
+
+.event-participants :is(button, select):focus-visible {
+  outline: 2px solid #aa824d;
+  outline-offset: 3px;
+}

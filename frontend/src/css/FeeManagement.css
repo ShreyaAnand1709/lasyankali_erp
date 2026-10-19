@@ -1,0 +1,27 @@
+.fee-actions {
+  margin-top: 22px;
+  margin-bottom: 16px;
+}
+
+.fee-records {
+  margin-top: 36px;
+}
+
+.fee-records h2 {
+  margin: 0;
+  color: #421524;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.fee-filters {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.fee-filters > .student-field {
+  flex: 1 1 180px;
+}

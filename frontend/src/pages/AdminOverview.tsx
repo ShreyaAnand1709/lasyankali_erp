@@ -26,9 +26,9 @@ export default function AdminOverview() {
               </span>
               <h3>{name}</h3>
 
-              {["Students", "Teachers", "Parents"].includes(name) ? (
+              {["Students", "Teachers", "Parents", "Batches", "Events"].includes(name) ? (
                 <Link to={`/dashboard/admin/${name.toLowerCase()}`}>
-                Manage {name.toLowerCase()} →
+                  Manage {name.toLowerCase()} →
                 </Link>
               ) : (
                 <span className="admin-module-status">Coming soon</span>

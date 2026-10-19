@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lasyankali.erp.dto.BatchMemberResponseDTO;
 import com.lasyankali.erp.dto.BatchResponseDTO;
 import com.lasyankali.erp.dto.CreateBatchDTO;
 import com.lasyankali.erp.dto.UpdateBatchDTO;
@@ -106,5 +108,21 @@ public class BatchController {
 	    batchService.deleteStudent(batchId, studentId);
 
 	    return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/{batchId}/students")
+	public ResponseEntity<List<BatchMemberResponseDTO>> getBatchStudents(
+	        @PathVariable Long batchId) {
+
+	    return ResponseEntity.ok(
+	            batchService.getBatchStudents(batchId));
+	}
+
+	@GetMapping("/{batchId}/teachers")
+	public ResponseEntity<List<BatchMemberResponseDTO>> getBatchTeachers(
+	        @PathVariable Long batchId) {
+
+	    return ResponseEntity.ok(
+	            batchService.getBatchTeachers(batchId));
 	}
 }

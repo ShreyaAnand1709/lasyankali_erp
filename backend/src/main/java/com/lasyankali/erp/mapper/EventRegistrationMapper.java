@@ -9,6 +9,7 @@ import com.lasyankali.erp.entity.EventRegister;
 public class EventRegistrationMapper {
 	public EventRegistrationDTO mapToEventRegister(EventRegister register) {
 		EventRegistrationDTO registerEvent = new EventRegistrationDTO();
+		registerEvent.setStudentId(register.getStudent().getStudentId());
 		registerEvent.setEventName(register.getEvent().getEventName());
 		registerEvent.setStudentName(register.getStudent().
 				getUser().

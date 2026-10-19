@@ -1,8 +1,10 @@
 package com.lasyankali.erp.repository;
 
 import java.util.List;
+import jakarta.persistence.LockModeType;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.lasyankali.erp.entity.Batch;
@@ -22,4 +24,7 @@ public interface BatchRepository extends JpaRepository<Batch, Long>{
 	         )
 			""")
 	List<Batch> searchBatch(@Param("keyword") String keyword);
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("SELECT b FROM Batch b WHERE b.batchId = :batchId")
+	Optional<Batch> findForUpdate(@Param("batchId") Long batchId);
 }

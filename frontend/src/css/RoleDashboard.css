@@ -1,0 +1,254 @@
+.role-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  height: 100dvh;
+  background: #f7f2e9;
+  color: #421524;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.role-layout,
+.role-layout * {
+  box-sizing: border-box;
+}
+
+.role-sidebar {
+  min-height: 0;
+  padding: 26px 18px;
+  overflow-y: auto;
+  border-right: 1px solid #e2d8cc;
+  background: #fffcf7;
+}
+
+.role-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #421524;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.role-brand img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.role-brand small {
+  display: block;
+  margin-top: 4px;
+  color: #786a6e;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.role-eyebrow {
+  margin: 36px 10px 16px;
+  color: #826849;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.role-sidebar nav {
+  display: grid;
+  gap: 6px;
+}
+
+.role-sidebar nav button {
+  min-height: 44px;
+  padding: 12px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #786a6e;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.role-sidebar nav .role-nav-active {
+  background: #421524;
+  color: #f7f2e9;
+}
+
+.role-workspace {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.role-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 28px;
+  border-bottom: 1px solid #e2d8cc;
+  font-size: 13px;
+}
+
+.role-account {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  overflow-wrap: anywhere;
+}
+
+.role-account button,
+.role-refresh {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #c9beb5;
+  border-radius: 5px;
+  background: #fffcf7;
+  color: #421524;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.role-main {
+  flex: 1;
+  min-height: 0;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.role-main h1 {
+  margin: 0 0 18px;
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.role-introduction {
+  color: #786a6e;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.role-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.role-shortcuts button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 110px;
+  padding: 24px;
+  border: 1px solid #e2d8cc;
+  border-radius: 8px;
+  background: #fffcf7;
+  color: #421524;
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.role-refresh {
+  margin: 8px 0 20px;
+}
+
+.role-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e2d8cc;
+  border-radius: 8px;
+  background: #fffcf7;
+}
+
+.role-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.role-table caption {
+  padding: 16px;
+  color: #786a6e;
+  text-align: left;
+  font-size: 12px;
+}
+
+.role-table th,
+.role-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e2d8cc;
+}
+
+.role-table th {
+  background: #f0e8dc;
+  font-size: 12px;
+}
+
+.role-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.role-error {
+  padding: 16px;
+  border: 1px solid #d6a6a6;
+  border-radius: 5px;
+  background: #fff0ed;
+  color: #862a32;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.role-error a {
+  color: inherit;
+}
+
+.role-layout button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.role-layout :is(a, button):focus-visible {
+  outline: 2px solid #aa824d;
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .role-layout {
+    height: auto;
+    min-height: 100dvh;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .role-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #e2d8cc;
+  }
+
+  .role-sidebar nav {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .role-sidebar nav button {
+    flex-shrink: 0;
+  }
+
+  .role-eyebrow {
+    margin-top: 20px;
+  }
+
+  .role-main {
+    padding: 24px 18px;
+    overflow: visible;
+  }
+}

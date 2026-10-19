@@ -34,9 +34,11 @@ public class UpdateBatchDTO {
 	public void setBatchName(String batchName) {
 		this.batchName = batchName;
 	}
+	@com.fasterxml.jackson.annotation.JsonProperty("discipline")
 	public Disciplines getDisciplines() {
 		return discipline;
 	}
+	@com.fasterxml.jackson.annotation.JsonProperty("discipline")
 	public void setDisciplines(Disciplines discipline) {
 		this.discipline = discipline;
 	}

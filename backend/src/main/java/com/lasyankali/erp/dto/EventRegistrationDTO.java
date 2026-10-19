@@ -5,18 +5,29 @@ import java.time.LocalDate;
 import com.lasyankali.erp.entity.enums.ParticipationStatus;
 
 public class EventRegistrationDTO {
+	private Long studentId;
 	private String studentName;
 	private String eventName;
 	private LocalDate registrationDate;
 	private ParticipationStatus status;
-	public EventRegistrationDTO(String studentName, String eventName, LocalDate registrationDate,
+	public EventRegistrationDTO(Long studentId, String studentName, String eventName, LocalDate registrationDate,
 			ParticipationStatus status) {
 		super();
+		this.studentId = studentId;
 		this.studentName = studentName;
 		this.eventName = eventName;
 		this.registrationDate = registrationDate;
 		this.status = status;
 	}
+	
+	public Long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
+	}
+
 	public EventRegistrationDTO() {
 		super();
 	}

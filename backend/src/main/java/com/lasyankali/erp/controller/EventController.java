@@ -93,5 +93,12 @@ public class EventController {
 		EventRegistrationDTO response = eventRegService.updateParticipationStatus(eventId, studentId, status);	
 		return ResponseEntity.ok(response);
 	}
+	@GetMapping("/{eventId}/participants")
+	public ResponseEntity<List<EventRegistrationDTO>> getParticipants(
+	        @PathVariable Long eventId) {
+
+	    return ResponseEntity.ok(
+	            eventRegService.getParticipants(eventId));
+	}
 
 }

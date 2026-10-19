@@ -1,0 +1,14 @@
+.batch-roster {
+  margin-top: 32px;
+}
+
+.batch-roster h2 {
+  margin: 0 0 18px;
+  color: #421524;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.batch-roster .student-table-wrapper {
+  margin-top: 16px;
+}

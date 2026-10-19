@@ -2,6 +2,7 @@ package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -116,6 +117,29 @@ public class EventRegistrationServiceImpl implements EventRegistrationService{
 	    EventRegister savedRegister = eventRegRepo.save(register);
 
 	    return eventRegMapper.mapToEventRegister(savedRegister);
+	}
+
+	@Override
+	@Transactional
+	@PreAuthorize("hasRole('ADMIN')")
+	public List<EventRegistrationDTO> getParticipants(Long eventId) {
+		// TODO Auto-generated method stub
+		if (eventId == null || eventId <= 0) {
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.BAD_REQUEST,
+	                "A valid event ID is required");
+	    }
+
+	    if (!eventRepository.existsById(eventId)) {
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.NOT_FOUND,
+	                "Event not found");
+	    }
+
+	    return eventRegRepo.findByEvent_EventId(eventId)
+	            .stream()
+	            .map(eventRegMapper::mapToEventRegister)
+	            .toList();
 	}
 
 }

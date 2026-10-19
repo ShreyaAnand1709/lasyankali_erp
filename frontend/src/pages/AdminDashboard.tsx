@@ -66,15 +66,17 @@ async function handleLogout() {
           <NavLink to="/dashboard/admin/parents" className={navClass}>
             Parents
           </NavLink>
-          {["Batches", "Events", "Fees"].map((name) => (
-            <span
-              className="admin-nav-item admin-nav-item-pending"
-              key={name}
-            >
-              {name}
-              <small>Coming soon</small>
-            </span>
-          ))}
+          <NavLink to="/dashboard/admin/batches" className={navClass}>
+            Batches
+          </NavLink>
+
+          <NavLink to="/dashboard/admin/events" className={navClass}>
+            Events
+          </NavLink>
+
+          <NavLink to="/dashboard/admin/fees" className={navClass}>
+            Fees
+          </NavLink>
         </nav>
 
         <p className="admin-sidebar-note">

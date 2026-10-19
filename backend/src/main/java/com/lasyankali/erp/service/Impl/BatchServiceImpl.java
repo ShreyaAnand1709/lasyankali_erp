@@ -2,12 +2,16 @@ package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalTime;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.lasyankali.erp.dto.BatchMemberResponseDTO;
 import com.lasyankali.erp.dto.BatchResponseDTO;
 import com.lasyankali.erp.dto.CreateBatchDTO;
 import com.lasyankali.erp.dto.UpdateBatchDTO;
@@ -16,7 +20,9 @@ import com.lasyankali.erp.entity.BatchStudent;
 import com.lasyankali.erp.entity.BatchTeacher;
 import com.lasyankali.erp.entity.Student;
 import com.lasyankali.erp.entity.Teacher;
+import com.lasyankali.erp.entity.enums.BatchLevel;
 import com.lasyankali.erp.entity.enums.BatchStatus;
+import com.lasyankali.erp.entity.enums.Disciplines;
 import com.lasyankali.erp.entity.enums.EnrollmentStatus;
 import com.lasyankali.erp.entity.enums.Status;
 import com.lasyankali.erp.mapper.BatchMapper;
@@ -26,249 +32,411 @@ import com.lasyankali.erp.repository.BatchTeacherRepository;
 import com.lasyankali.erp.repository.StudentRepository;
 import com.lasyankali.erp.repository.TeacherRepository;
 import com.lasyankali.erp.service.BatchService;
-import jakarta.transaction.Transactional;
 
 @Service
-public class BatchServiceImpl implements BatchService{
-	
-	private final BatchRepository batchRepository;
-	private final BatchMapper batchmapper;
-	private final TeacherRepository teacherRepository;
-	private final BatchTeacherRepository batchTeacherRepository;
-	private final StudentRepository studentRepository;
-	private final BatchStudentRepository batchStudentRepository;
-	
-	public BatchServiceImpl(BatchRepository batchRepository, BatchMapper batchmapper,
-			TeacherRepository teacherRepository,BatchTeacherRepository batchTeacherRepository,
-			StudentRepository studentRepository,BatchStudentRepository batchStudentRepository) {
-		super();
-		this.batchRepository = batchRepository;
-		this.batchmapper = batchmapper;
-		this.teacherRepository = teacherRepository;
-		this.batchTeacherRepository = batchTeacherRepository;
-		this.studentRepository = studentRepository;
-		this.batchStudentRepository = batchStudentRepository;
-	}
+public class BatchServiceImpl implements BatchService {
 
-	@Override
-	@Transactional
+    private final BatchRepository batchRepository;
+    private final BatchMapper batchmapper;
+    private final TeacherRepository teacherRepository;
+    private final BatchTeacherRepository batchTeacherRepository;
+    private final StudentRepository studentRepository;
+    private final BatchStudentRepository batchStudentRepository;
+
+    public BatchServiceImpl(
+            BatchRepository batchRepository,
+            BatchMapper batchmapper,
+            TeacherRepository teacherRepository,
+            BatchTeacherRepository batchTeacherRepository,
+            StudentRepository studentRepository,
+            BatchStudentRepository batchStudentRepository) {
+
+        this.batchRepository = batchRepository;
+        this.batchmapper = batchmapper;
+        this.teacherRepository = teacherRepository;
+        this.batchTeacherRepository = batchTeacherRepository;
+        this.studentRepository = studentRepository;
+        this.batchStudentRepository = batchStudentRepository;
+    }
+
+    @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-	public void createBatch(CreateBatchDTO createBatchDTO) {
-		// 1. Check duplicate batch code
-        if (batchRepository.existsByBatchCode(createBatchDTO.getBatchCode())) {
-            throw new RuntimeException("Batch code already exists");
+    public void createBatch(CreateBatchDTO createBatchDTO) {
+
+        if (createBatchDTO == null) {
+            throw badRequest("Batch details are required");
         }
 
-        // 2. Validate capacity
-        if (createBatchDTO.getCapacity() == null
-                || createBatchDTO.getCapacity() <= 0) {
-
-            throw new RuntimeException(
-                    "Batch capacity must be greater than 0"
-            );
+        if (createBatchDTO.getBatchCode() == null
+                || createBatchDTO.getBatchCode().isBlank()) {
+            throw badRequest("Batch code is required");
         }
 
-        // 3. Validate timings
-        if (createBatchDTO.getStartTime() == null
-                || createBatchDTO.getEndTime() == null) {
+        validateBatchDetails(
+                createBatchDTO.getBatchName(),
+                createBatchDTO.getDiscipline(),
+                createBatchDTO.getLevel(),
+                createBatchDTO.getStartTime(),
+                createBatchDTO.getEndTime(),
+                createBatchDTO.getCapacity());
 
-            throw new RuntimeException(
-                    "Batch start time and end time are required"
-            );
+        String batchCode = createBatchDTO.getBatchCode().trim();
+
+        if (batchRepository.existsByBatchCode(batchCode)) {
+            throw conflict("Batch code already exists");
         }
 
-        if (!createBatchDTO.getStartTime()
-                .isBefore(createBatchDTO.getEndTime())) {
+        LocalDateTime now = LocalDateTime.now();
 
-            throw new RuntimeException(
-                    "Batch start time must be before end time"
-            );
-        }
-		Batch batch = new Batch();
-		batch.setBatchCode(createBatchDTO.getBatchCode());
-		batch.setBatchName(createBatchDTO.getBatchName());
-		batch.setDiscipline(createBatchDTO.getDiscipline());
-		batch.setLevel(createBatchDTO.getLevel());
-		batch.setStartTime(createBatchDTO.getStartTime());
-		batch.setEndTime(createBatchDTO.getEndTime());
-		batch.setCapacity(createBatchDTO.getCapacity());
-		batch.setStatus(BatchStatus.ACTIVE);
-		batch.setCreatedAt(LocalDateTime.now());
-		batch.setUpdatedAt(LocalDateTime.now());
-		batchRepository.save(batch);
-		
-	}
+        Batch batch = new Batch();
+        batch.setBatchCode(batchCode);
+        batch.setBatchName(createBatchDTO.getBatchName().trim());
+        batch.setDiscipline(createBatchDTO.getDiscipline());
+        batch.setLevel(createBatchDTO.getLevel());
+        batch.setStartTime(createBatchDTO.getStartTime());
+        batch.setEndTime(createBatchDTO.getEndTime());
+        batch.setCapacity(createBatchDTO.getCapacity());
+        batch.setStatus(BatchStatus.ACTIVE);
+        batch.setCreatedAt(now);
+        batch.setUpdatedAt(now);
 
-	@Override
-	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-	public List<BatchResponseDTO> getAllBatches() {
-		// TODO Auto-generated method stub
-		List<Batch> batchList = batchRepository.findByStatus(BatchStatus.ACTIVE);
-		List<BatchResponseDTO> response = new ArrayList<>();
-		for(Batch batch : batchList ) {
-			BatchResponseDTO batchDto = batchmapper.mapToBatchResponse(batch);
-			response.add(batchDto);
-		}
-		return response;
-	}
+        batchRepository.save(batch);
+    }
 
-	@Override
-	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-	public BatchResponseDTO getBatchById(Long batchId) {
-		Batch batch = batchRepository.findById(batchId).
-				orElseThrow(
-						()-> new RuntimeException("Batch not found"));
-		BatchResponseDTO response = batchmapper.mapToBatchResponse(batch);
-		return response;
-	}
+    @Override
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public List<BatchResponseDTO> getAllBatches() {
 
-	@Override
-	@Transactional
+        return batchRepository.findByStatus(BatchStatus.ACTIVE)
+                .stream()
+                .map(batchmapper::mapToBatchResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public BatchResponseDTO getBatchById(Long batchId) {
+        return batchmapper.mapToBatchResponse(findBatch(batchId));
+    }
+
+    @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-	public BatchResponseDTO updateBatch(Long batchId, UpdateBatchDTO updateBatchDTO) {
-		// TODO Auto-generated method stub
-		Batch batch = batchRepository.findById(batchId).
-				orElseThrow(
-						()-> new RuntimeException("Batch not found"));
-		if (updateBatchDTO.getCapacity() == null
-                || updateBatchDTO.getCapacity() <= 0) {
+    public BatchResponseDTO updateBatch(
+            Long batchId,
+            UpdateBatchDTO updateBatchDTO) {
 
-            throw new RuntimeException(
-                    "Batch capacity must be greater than 0"
-            );
+        if (updateBatchDTO == null) {
+            throw badRequest("Batch details are required");
         }
 
-        // 3. Validate timings
-        if (updateBatchDTO.getStartTime() == null
-                || updateBatchDTO.getEndTime() == null) {
+        validateBatchDetails(
+                updateBatchDTO.getBatchName(),
+                updateBatchDTO.getDisciplines(),
+                updateBatchDTO.getLevel(),
+                updateBatchDTO.getStartTime(),
+                updateBatchDTO.getEndTime(),
+                updateBatchDTO.getCapacity());
 
-            throw new RuntimeException(
-                    "Batch start time and end time are required"
-            );
+        Batch batch = findBatchForUpdate(batchId);
+
+        long activeEnrollments = batchStudentRepository
+                .countByBatch_BatchIdAndStatus(
+                        batchId,
+                        EnrollmentStatus.ACTIVE);
+
+        if (updateBatchDTO.getCapacity() < activeEnrollments) {
+            throw conflict(
+                    "Capacity cannot be lower than current active enrollment");
         }
 
-        if (!updateBatchDTO.getStartTime()
-                .isBefore(updateBatchDTO.getEndTime())) {
+        batch.setBatchName(updateBatchDTO.getBatchName().trim());
+        batch.setDiscipline(updateBatchDTO.getDisciplines());
+        batch.setLevel(updateBatchDTO.getLevel());
+        batch.setStartTime(updateBatchDTO.getStartTime());
+        batch.setEndTime(updateBatchDTO.getEndTime());
+        batch.setCapacity(updateBatchDTO.getCapacity());
 
-            throw new RuntimeException(
-                    "Batch start time must be before end time"
-            );
+        if (updateBatchDTO.getStatus() != null) {
+            batch.setStatus(updateBatchDTO.getStatus());
         }
-		batch.setBatchName(updateBatchDTO.getBatchName());
-		batch.setDiscipline(updateBatchDTO.getDisciplines());
-		batch.setLevel(updateBatchDTO.getLevel());
-		batch.setStartTime(updateBatchDTO.getStartTime());
-		batch.setEndTime(updateBatchDTO.getEndTime());
-		batch.setCapacity(updateBatchDTO.getCapacity());
-		if (updateBatchDTO.getStatus() != null) {
-		    batch.setStatus(updateBatchDTO.getStatus());
-		}
-		batch.setUpdatedAt(LocalDateTime.now());
-		batchRepository.save(batch);
-		BatchResponseDTO response = batchmapper.mapToBatchResponse(batch);
-		return response;
-	}
 
-	@Override
-	@Transactional
+        batch.setUpdatedAt(LocalDateTime.now());
+
+        return batchmapper.mapToBatchResponse(
+                batchRepository.save(batch));
+    }
+
+    @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-	public void deleteBatch(Long batchId) {
-		// TODO Auto-generated method stub
-		Batch batch = batchRepository.findById(batchId).
-				orElseThrow(
-						()-> new RuntimeException("Batch not found"));
-		batch.setStatus(BatchStatus.INACTIVE);
-		batch.setUpdatedAt(LocalDateTime.now());
-		batchRepository.save(batch);
-		
-	}
+    public void deleteBatch(Long batchId) {
 
-	@Override
-	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-	public List<BatchResponseDTO> searchBatch(String keyword) {
-		// TODO Auto-generated method stub
-		List<Batch> batches = batchRepository.searchBatch(keyword);
-	    return batches.stream()
-	            .map(batchmapper::mapToBatchResponse)
-	            .toList();
-	}
+        Batch batch = findBatchForUpdate(batchId);
 
-	@Override
-	@Transactional
+        batch.setStatus(BatchStatus.INACTIVE);
+        batch.setUpdatedAt(LocalDateTime.now());
+
+        batchRepository.save(batch);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public List<BatchResponseDTO> searchBatch(String keyword) {
+
+        if (keyword == null || keyword.isBlank()) {
+            return batchRepository.findByStatus(BatchStatus.ACTIVE)
+                    .stream()
+                    .map(batchmapper::mapToBatchResponse)
+                    .toList();
+        }
+
+        return batchRepository.searchBatch(keyword.trim())
+                .stream()
+                .map(batchmapper::mapToBatchResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-	public void assignTeacherToBatch(Long batchId, Long teacherId) {
-		// TODO Auto-generated method stub
-	Batch batch = batchRepository.findById(batchId).
-			orElseThrow(
-					()-> new RuntimeException("Batch doesnt exist"));
-	Teacher teacher = teacherRepository.findById(teacherId).
-			orElseThrow(
-					()-> new RuntimeException("Teacher not found"));
-	BatchTeacher batchTeacher = new BatchTeacher();
-	if(batch.getStatus() != BatchStatus.ACTIVE) {
-		throw new RuntimeException("Batch is inactive");
-	}
-	if(teacher.getStatus() != Status.ACTIVE) {
-		throw new RuntimeException("Teacher is inactive");
-	}
-	if(batchTeacherRepository.existsByBatch_BatchIdAndTeacher_TeacherId(batchId, teacherId)) {
-		throw new RuntimeException("Teacher and batch are already assigned");
-	}
-	batchTeacher.setTeacher(teacher);
-	batchTeacher.setBatch(batch);
-	batchTeacher.setAssignedDate(LocalDate.now());
-	batchTeacher.setCreatedAt(LocalDateTime.now());
-	batchTeacherRepository.save(batchTeacher);	
-	}
-	
-	@Override
-	@Transactional
-    @PreAuthorize("hasRole('ADMIN')")
-	public void deleteTeacher(Long batchId, Long teacherId) {
-		BatchTeacher assignment = batchTeacherRepository.findByBatch_BatchIdAndTeacher_TeacherId(batchId, teacherId).
-				orElseThrow(
-						()-> new RuntimeException("Teacher is not assigned to the batch"));
-		batchTeacherRepository.delete(assignment);
-	}
+    public void assignTeacherToBatch(Long batchId, Long teacherId) {
 
-	@Override
-	@Transactional
-    @PreAuthorize("hasRole('ADMIN')")
-	public void assignStudentToBatch(Long batchId, Long studentId) {
-		// TODO Auto-generated method stub
-		Batch batch = batchRepository.findById(batchId).
-				orElseThrow(
-						()-> new RuntimeException("Batch doesnt exist"));
-		Student student = studentRepository.findById(studentId).
-				orElseThrow(
-						()-> new RuntimeException("Student not found"));
-		BatchStudent batchStudent = new BatchStudent();
-		if(batch.getStatus() != BatchStatus.ACTIVE) {
-			throw new RuntimeException("Batch is inactive");
-		}
-		if(student.getStatus() != Status.ACTIVE) {
-			throw new RuntimeException("Student is inactive");
-		}
-		if(batchStudentRepository.existsByBatch_BatchIdAndStudent_StudentId(batchId, studentId)) {
-			throw new RuntimeException("Student and batch are already assigned");
-		}
-		batchStudent.setBatch(batch);
-		batchStudent.setStudent(student);
-		batchStudent.setEnrollmentDate(LocalDate.now());
-		batchStudent.setStatus(EnrollmentStatus.ACTIVE);
-		batchStudent.setCreatedAt(LocalDateTime.now());
-		batchStudentRepository.save(batchStudent);	
-	}
+        validateId(teacherId, "Teacher");
 
-	@Override
-	@Transactional
-    @PreAuthorize("hasRole('ADMIN')")
-	public void deleteStudent(Long batchId, Long studentId) {
-		// TODO Auto-generated method stub
-		BatchStudent assignment = batchStudentRepository.findByBatch_BatchIdAndStudent_StudentId(batchId, studentId).
-				orElseThrow(
-						()-> new RuntimeException("Student is not assigned to the batch"));
-		batchStudentRepository.delete(assignment);
-	}
+        Batch batch = findBatchForUpdate(batchId);
+        requireActiveBatch(batch);
 
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> notFound("Teacher not found"));
+
+        if (teacher.getStatus() != Status.ACTIVE) {
+            throw conflict("Teacher profile is inactive");
+        }
+
+        if (batchTeacherRepository
+                .existsByBatch_BatchIdAndTeacher_TeacherId(
+                        batchId, teacherId)) {
+            throw conflict("Teacher is already assigned to this batch");
+        }
+
+        BatchTeacher assignment = new BatchTeacher();
+        assignment.setBatch(batch);
+        assignment.setTeacher(teacher);
+        assignment.setAssignedDate(LocalDate.now());
+        assignment.setCreatedAt(LocalDateTime.now());
+
+        batchTeacherRepository.save(assignment);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteTeacher(Long batchId, Long teacherId) {
+
+        validateId(teacherId, "Teacher");
+        findBatchForUpdate(batchId);
+
+        BatchTeacher assignment = batchTeacherRepository
+                .findByBatch_BatchIdAndTeacher_TeacherId(
+                        batchId, teacherId)
+                .orElseThrow(() ->
+                        notFound("Teacher is not assigned to this batch"));
+
+        batchTeacherRepository.delete(assignment);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public void assignStudentToBatch(Long batchId, Long studentId) {
+
+        validateId(studentId, "Student");
+
+        Batch batch = findBatchForUpdate(batchId);
+        requireActiveBatch(batch);
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> notFound("Student not found"));
+
+        if (student.getStatus() != Status.ACTIVE) {
+            throw conflict("Student profile is inactive");
+        }
+
+        if (batchStudentRepository
+                .existsByBatch_BatchIdAndStudent_StudentId(
+                        batchId, studentId)) {
+            throw conflict("Student already has an enrollment in this batch");
+        }
+
+        if (batch.getCapacity() == null || batch.getCapacity() <= 0) {
+            throw conflict("Batch capacity is not configured correctly");
+        }
+
+        long activeEnrollments = batchStudentRepository
+                .countByBatch_BatchIdAndStatus(
+                        batchId,
+                        EnrollmentStatus.ACTIVE);
+
+        if (activeEnrollments >= batch.getCapacity()) {
+            throw conflict("Batch has reached its capacity");
+        }
+
+        BatchStudent assignment = new BatchStudent();
+        assignment.setBatch(batch);
+        assignment.setStudent(student);
+        assignment.setEnrollmentDate(LocalDate.now());
+        assignment.setStatus(EnrollmentStatus.ACTIVE);
+        assignment.setCreatedAt(LocalDateTime.now());
+
+        batchStudentRepository.save(assignment);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteStudent(Long batchId, Long studentId) {
+
+        validateId(studentId, "Student");
+        findBatchForUpdate(batchId);
+
+        BatchStudent assignment = batchStudentRepository
+                .findByBatch_BatchIdAndStudent_StudentId(
+                        batchId, studentId)
+                .orElseThrow(() ->
+                        notFound("Student is not assigned to this batch"));
+
+        // Preserves the existing physical-removal behavior.
+        batchStudentRepository.delete(assignment);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<BatchMemberResponseDTO> getBatchStudents(Long batchId) {
+
+        findBatch(batchId);
+
+        return batchStudentRepository.findByBatch_BatchId(batchId)
+                .stream()
+                .map(assignment -> {
+                    Student student = assignment.getStudent();
+                    var user = student.getUser();
+
+                    return new BatchMemberResponseDTO(
+                            student.getStudentId(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getUserName(),
+                            student.getStatus() == null
+                                    ? null
+                                    : student.getStatus().name(),
+                            assignment.getStatus() == null
+                                    ? null
+                                    : assignment.getStatus().name(),
+                            assignment.getEnrollmentDate());
+                })
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<BatchMemberResponseDTO> getBatchTeachers(Long batchId) {
+
+        findBatch(batchId);
+
+        return batchTeacherRepository.findByBatch_BatchId(batchId)
+                .stream()
+                .map(assignment -> {
+                    Teacher teacher = assignment.getTeacher();
+                    var user = teacher.getUser();
+
+                    return new BatchMemberResponseDTO(
+                            teacher.getTeacherId(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getUserName(),
+                            teacher.getStatus() == null
+                                    ? null
+                                    : teacher.getStatus().name(),
+                            null,
+                            assignment.getAssignedDate());
+                })
+                .toList();
+    }
+
+    private Batch findBatch(Long batchId) {
+        validateId(batchId, "Batch");
+
+        return batchRepository.findById(batchId)
+                .orElseThrow(() -> notFound("Batch not found"));
+    }
+
+    private Batch findBatchForUpdate(Long batchId) {
+        validateId(batchId, "Batch");
+
+        return batchRepository.findForUpdate(batchId)
+                .orElseThrow(() -> notFound("Batch not found"));
+    }
+
+    private void requireActiveBatch(Batch batch) {
+        if (batch.getStatus() != BatchStatus.ACTIVE) {
+            throw conflict("Batch is inactive");
+        }
+    }
+
+    private void validateId(Long id, String resource) {
+        if (id == null || id <= 0) {
+            throw badRequest(resource + " ID must be greater than zero");
+        }
+    }
+
+    private void validateBatchDetails(
+            String batchName,
+            Disciplines discipline,
+            BatchLevel level,
+            LocalTime startTime,
+            LocalTime endTime,
+            Integer capacity) {
+
+        if (batchName == null || batchName.isBlank()) {
+            throw badRequest("Batch name is required");
+        }
+
+        if (discipline == null || level == null) {
+            throw badRequest("Discipline and level are required");
+        }
+
+        if (capacity == null || capacity <= 0) {
+            throw badRequest("Batch capacity must be greater than zero");
+        }
+
+        if (startTime == null || endTime == null) {
+            throw badRequest("Start time and end time are required");
+        }
+
+        if (!startTime.isBefore(endTime)) {
+            throw badRequest("Start time must be before end time");
+        }
+    }
+
+    private ResponseStatusException badRequest(String message) {
+        return new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, message);
+    }
+
+    private ResponseStatusException notFound(String message) {
+        return new ResponseStatusException(
+                HttpStatus.NOT_FOUND, message);
+    }
+
+    private ResponseStatusException conflict(String message) {
+        return new ResponseStatusException(
+                HttpStatus.CONFLICT, message);
+    }
 }

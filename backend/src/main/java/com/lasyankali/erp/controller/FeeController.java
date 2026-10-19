@@ -33,9 +33,13 @@ public class FeeController {
 	
 	@PostMapping("/generate")
 	@PreAuthorize ("hasRole('ADMIN')")
-	public ResponseEntity<String> generateFee(@Valid @RequestBody GenerateMonthlyFeeRequestDTO fee) {
-		feeService.generateMonthlyFee(fee.getStudentId(), fee.getBatchId(), fee.getBillingMonth());
-		return ResponseEntity.ok("The generation reqauest proceed");	
+	public ResponseEntity<Boolean> generateFee(@Valid @RequestBody GenerateMonthlyFeeRequestDTO fee) {
+		boolean created = feeService.generateMonthlyFee(
+	            fee.getStudentId(),
+	            fee.getBatchId(),
+	            fee.getBillingMonth());
+
+	    return ResponseEntity.ok(created);	
 	}
 	
 	@PostMapping("/generate-monthly")

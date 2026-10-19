@@ -1,6 +1,7 @@
 package com.lasyankali.erp.service;
 
 import java.util.List;
+import com.lasyankali.erp.dto.BatchMemberResponseDTO;
 
 import com.lasyankali.erp.dto.BatchResponseDTO;
 import com.lasyankali.erp.dto.CreateBatchDTO;
@@ -19,4 +20,6 @@ public interface BatchService {
 	void deleteTeacher(Long batchId, Long teacherId);
 	void assignStudentToBatch(Long batchId, Long studentId);
 	void deleteStudent(Long batchId, Long studentId);
+	List<BatchMemberResponseDTO> getBatchStudents(Long batchId);
+	List<BatchMemberResponseDTO> getBatchTeachers(Long batchId);
 }
