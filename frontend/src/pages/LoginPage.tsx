@@ -2,7 +2,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getCurrentUser, login } from "../api/auth.ts";
+import { login } from "../api/auth";
+import { useAuth } from "../auth/AuthContext";
 import loginHero from "../assets/loginHero.jpg";
 import "../css/LoginPage.css";
 
@@ -15,7 +16,7 @@ const dashboardRoutes: Record<string, string> = {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-
+  const { refreshUser } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +34,7 @@ export default function LoginPage() {
     try {
       await login(username.trim(), password);
 
-      const user = await getCurrentUser();
+      const user = await refreshUser();
 
       if (!user) {
         throw new Error(

@@ -78,6 +78,7 @@ public class CreateTeacherDTO {
 	public String getSpecialization() {
 		return specialization;
 	}
+	@com.fasterxml.jackson.annotation.JsonSetter("specialization")
 	public void setSpecification(String specialization) {
 		this.specialization = specialization;
 	}

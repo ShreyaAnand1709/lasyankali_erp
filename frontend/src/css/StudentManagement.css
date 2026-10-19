@@ -1,0 +1,220 @@
+.student-module {
+  color: #421524;
+}
+
+.student-heading,
+.student-actions,
+.student-search {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.student-heading {
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.student-heading h1 {
+  margin-bottom: 0;
+}
+
+.student-module a {
+  color: #421524;
+}
+
+.student-module .student-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid #421524;
+  border-radius: 5px;
+  background: #421524;
+  color: #f7f2e9;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.student-module .student-secondary {
+  background: transparent;
+  color: #421524;
+}
+
+.student-module .student-danger {
+  background: #fff0ed;
+  border-color: #d6a6a6;
+  color: #862a32;
+}
+
+.student-module button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.student-search {
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.student-search > .student-field {
+  flex: 1 1 240px;
+  max-width: 420px;
+}
+
+.student-field {
+  display: grid;
+  gap: 8px;
+  color: #421524;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.student-field input,
+.student-field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #c9beb5;
+  border-radius: 5px;
+  background: #fffcf7;
+  color: #421524;
+  font: inherit;
+}
+
+.student-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e2d8cc;
+  border-radius: 8px;
+  background: #fffcf7;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.student-table caption {
+  padding: 16px;
+  text-align: left;
+  color: #786a6e;
+  font-size: 12px;
+}
+
+.student-table th,
+.student-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e2d8cc;
+}
+
+.student-table th {
+  background: #f0e8dc;
+  font-size: 12px;
+}
+
+.student-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.student-form {
+  display: grid;
+  gap: 24px;
+}
+
+.student-form fieldset,
+.student-details {
+  min-width: 0;
+  margin: 0;
+  padding: 24px;
+  border: 1px solid #e2d8cc;
+  border-radius: 8px;
+  background: #fffcf7;
+}
+
+.student-form legend {
+  padding: 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.student-form-grid,
+.student-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.student-details-grid {
+  margin: 0 0 28px;
+}
+
+.student-details dt {
+  margin-bottom: 6px;
+  color: #786a6e;
+  font-size: 12px;
+}
+
+.student-details dd {
+  margin: 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.student-hint {
+  margin-top: 0;
+  color: #786a6e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.student-error,
+.student-notice {
+  margin: 0 0 24px;
+  padding: 16px;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.student-error {
+  border: 1px solid #d6a6a6;
+  background: #fff0ed;
+  color: #862a32;
+}
+
+.student-error button {
+  margin-left: 16px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.student-notice {
+  border: 1px solid #c5d4c3;
+  background: #edf4e9;
+  color: #365437;
+}
+
+.student-module :is(a, button, input, select):focus-visible {
+  outline: 2px solid #aa824d;
+  outline-offset: 3px;
+}
+
+@media (max-width: 650px) {
+  .student-form-grid,
+  .student-details-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .student-form fieldset,
+  .student-details {
+    padding: 18px;
+  }
+}

@@ -16,4 +16,6 @@ public interface ParentService {
 	void deleteParent(Long parentId);
 
 	List<ParentResponseDTO> searchParents(String keyword);
+	
+	List<ParentResponseDTO> getAllParents();
 }

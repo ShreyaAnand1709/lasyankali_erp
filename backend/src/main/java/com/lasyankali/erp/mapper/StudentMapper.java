@@ -20,6 +20,7 @@ public class StudentMapper {
 		studentDto.setJoiningDate(student.getJoiningDate());
 		studentDto.setPhotoUrl(student.getPhotoUrl());
 		studentDto.setStatus(student.getStatus());
+		studentDto.setDateOfBirth(student.getDateOfBirth());
 		return studentDto;
 	}
 }

@@ -63,4 +63,9 @@ public class ParentController {
 
         return parentService.searchParents(keyword);
     }
+    
+    @GetMapping
+    public List<ParentResponseDTO> getAllParents() {
+        return parentService.getAllParents();
+    }
 }

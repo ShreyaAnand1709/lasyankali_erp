@@ -17,13 +17,14 @@ public class StudentResponseDTO {
 	private LocalDate joiningDate;
 	private String photoUrl;
 	private Status status;
+	private LocalDate dateOfBirth;
 	public StudentResponseDTO() {
 		super();
 	}
 	
 	public StudentResponseDTO(Long studentId, String firstName, String lastName, String username, String email,
 			String mobileNumber, String admissionNumber, Gender gender, LocalDate joiningDate, String photoUrl,
-			Status status) {
+			Status status, LocalDate dateOfBirth) {
 		super();
 		this.studentId = studentId;
 		this.firstName = firstName;
@@ -36,6 +37,7 @@ public class StudentResponseDTO {
 		this.joiningDate = joiningDate;
 		this.photoUrl = photoUrl;
 		this.status = status;
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Long getStudentId() {
@@ -103,5 +105,12 @@ public class StudentResponseDTO {
 	}
 	public void setStatus(Status status) {
 		this.status = status;
-	}	
+	}
+	public LocalDate getDateOfBirth() {
+	    return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+	    this.dateOfBirth = dateOfBirth;
+	}
 }

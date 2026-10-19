@@ -1,9 +1,13 @@
 package com.lasyankali.erp.service.Impl;
 
 import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.lasyankali.erp.dto.CreateParentDTO;
@@ -55,8 +59,24 @@ public class ParentServiceImpl implements ParentService{
 	@Override
 	@PreAuthorize("hasAnyRole('ADMIN','PARENT')")
 	public ParentResponseDTO getParentById(Long parentId) {
-		Parents parent = repo.findById(parentId)
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+
+	    Parents parent = repo.findById(parentId)
 	            .orElseThrow(() -> new RuntimeException("Parent not found"));
+
+	    boolean isAdmin = authentication.getAuthorities().stream()
+	            .anyMatch(authority ->
+	                    "ROLE_ADMIN".equals(authority.getAuthority()));
+
+	    boolean ownsProfile = parent.getUser() != null
+	            && authentication.getName().equals(
+	                    parent.getUser().getUserName());
+
+	    if (!isAdmin && !ownsProfile) {
+	        throw new AccessDeniedException(
+	                "You cannot access another parent's profile");
+	    }
 
 	    return mapper.mapToResponse(parent);
 	}
@@ -98,6 +118,16 @@ public class ParentServiceImpl implements ParentService{
 		List<Parents> parents = repo.searchParents(keyword);
 
 	    return parents.stream()
+	            .map(mapper::mapToResponse)
+	            .toList();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@PreAuthorize("hasRole('ADMIN')")
+	public List<ParentResponseDTO> getAllParents() {
+		// TODO Auto-generated method stub
+		return repo.findAll().stream()
 	            .map(mapper::mapToResponse)
 	            .toList();
 	}

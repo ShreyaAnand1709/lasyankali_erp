@@ -22,23 +22,25 @@ async function readError(response: Response): Promise<Error> {
   );
 }
 
-export async function login(
-  username: string,
-  password: string,
-): Promise<LoginResponse> {
-  // First obtain a CSRF token and its associated cookie.
-  const csrfResponse = await fetch(`${AUTH_URL}/csrf`, {
+async function getCsrf(): Promise<CsrfResponse> {
+  const response = await fetch(`${AUTH_URL}/csrf`, {
     credentials: "include",
     cache: "no-store",
   });
 
-  if (!csrfResponse.ok) {
-    throw await readError(csrfResponse);
+  if (!response.ok) {
+    throw await readError(response);
   }
 
-  const csrf: CsrfResponse = await csrfResponse.json();
+  return response.json();
+}
 
-  // Send credentials with the CSRF header and browser cookies.
+export async function login(
+  username: string,
+  password: string,
+): Promise<LoginResponse> {
+  const csrf = await getCsrf();
+
   const response = await fetch(`${AUTH_URL}/login`, {
     method: "POST",
     credentials: "include",
@@ -54,6 +56,22 @@ export async function login(
   }
 
   return response.json();
+}
+
+export async function logout(): Promise<void> {
+  const csrf = await getCsrf();
+
+  const response = await fetch(`${AUTH_URL}/logout`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      [csrf.headerName]: csrf.token,
+    },
+  });
+
+  if (!response.ok) {
+    throw await readError(response);
+  }
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {

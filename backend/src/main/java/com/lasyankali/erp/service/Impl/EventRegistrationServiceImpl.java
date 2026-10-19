@@ -92,13 +92,30 @@ public class EventRegistrationServiceImpl implements EventRegistrationService{
 	@Override
 	public EventRegistrationDTO updateParticipationStatus(Long eventId, Long studentId, UpdateParticipationStatusDTO status) {
 		// TODO Auto-generated method stub
-		EventRegister register = eventRegRepo.findByEvent_EventIdAndStudent_StudentId(eventId, studentId).
-				orElseThrow(()
-						-> new RuntimeException("Student and the event doesnt exist"));
-		register.setParticipationStatus(status.getStatus());
-		eventRegRepo.save(register);
-		EventRegistrationDTO response = eventRegMapper.mapToEventRegister(register);
-		return response;
+		if (eventId == null || studentId == null) {
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.BAD_REQUEST,
+	                "Event ID and student ID are required");
+	    }
+
+	    if (status == null || status.getStatus() == null) {
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.BAD_REQUEST,
+	                "Participation status is required");
+	    }
+
+	    EventRegister register = eventRegRepo
+	            .findByEvent_EventIdAndStudent_StudentId(eventId, studentId)
+	            .orElseThrow(() ->
+	                    new org.springframework.web.server.ResponseStatusException(
+	                            org.springframework.http.HttpStatus.NOT_FOUND,
+	                            "Event registration not found"));
+
+	    register.setParticipationStatus(status.getStatus());
+
+	    EventRegister savedRegister = eventRegRepo.save(register);
+
+	    return eventRegMapper.mapToEventRegister(savedRegister);
 	}
 
 }

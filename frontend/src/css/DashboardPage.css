@@ -1,0 +1,108 @@
+.dashboard-page {
+  min-height: 100dvh;
+  background: #f7f2e9;
+  color: #421524;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.dashboard-page,
+.dashboard-page * {
+  box-sizing: border-box;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px clamp(20px, 4vw, 64px);
+  border-bottom: 1px solid #e2d8cc;
+  background: #fffcf7;
+}
+
+.dashboard-brand {
+  color: #421524;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  text-decoration: none;
+}
+
+.dashboard-brand span {
+  display: block;
+  margin-top: 4px;
+  color: #786a6e;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.dashboard-account {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-role {
+  padding: 6px 10px;
+  border: 1px solid #ddc9aa;
+  border-radius: 4px;
+  color: #715334;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.dashboard-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.dashboard-eyebrow {
+  color: #826849;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.dashboard-content h1 {
+  margin: 14px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 400;
+}
+
+.dashboard-welcome {
+  color: #786a6e;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.dashboard-placeholder {
+  margin-top: 32px;
+  padding: 28px;
+  border: 1px solid #e2d8cc;
+  border-radius: 8px;
+  background: #fffcf7;
+}
+
+.dashboard-placeholder h2 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.dashboard-placeholder p {
+  margin: 0;
+  color: #786a6e;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.dashboard-page a:focus-visible {
+  outline: 2px solid #aa824d;
+  outline-offset: 4px;
+}

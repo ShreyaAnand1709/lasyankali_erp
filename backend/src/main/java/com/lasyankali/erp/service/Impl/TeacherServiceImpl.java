@@ -97,6 +97,20 @@ public class TeacherServiceImpl implements TeacherService{
 	@Transactional
     @PreAuthorize("hasRole('ADMIN')")
 	public TeacherResponseDTO updateTeacher(Long teacherId, UpdateTeacherDTO updateTeacherDTO) {
+		Status requestedStatus = null;
+
+		if (updateTeacherDTO.getStatus() != null) {
+		    try {
+		        requestedStatus = Status.valueOf(
+		                updateTeacherDTO.getStatus()
+		                        .trim()
+		                        .toUpperCase(java.util.Locale.ROOT));
+		    } catch (IllegalArgumentException exception) {
+		        throw new org.springframework.web.server.ResponseStatusException(
+		                org.springframework.http.HttpStatus.BAD_REQUEST,
+		                "Status must be ACTIVE or INACTIVE");
+		    }
+		}
 		Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
 
@@ -112,7 +126,9 @@ public class TeacherServiceImpl implements TeacherService{
         teacher.setQualification(updateTeacherDTO.getQualification());
         teacher.setYearsOfExperience(updateTeacherDTO.getYearsOfExperience());
         teacher.setJoiningDate(updateTeacherDTO.getJoiningDate());
-
+        if (requestedStatus != null) {
+            teacher.setStatus(requestedStatus);
+        }
         teacher.setUpdatedAt(LocalDateTime.now());
 
         teacherRepository.save(teacher);
