@@ -22,7 +22,6 @@ public class LoginResponseDTO {
 	public String getRole() {
 		return role;
 	}
-	@JsonIgnore
 	public void setRole(String role) {
 		this.role = role;
 	}

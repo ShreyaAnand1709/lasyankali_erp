@@ -91,6 +91,8 @@ public class EventRegistrationServiceImpl implements EventRegistrationService{
 	}
 
 	@Override
+	@Transactional
+	@PreAuthorize("hasRole('ADMIN')")
 	public EventRegistrationDTO updateParticipationStatus(Long eventId, Long studentId, UpdateParticipationStatusDTO status) {
 		// TODO Auto-generated method stub
 		if (eventId == null || studentId == null) {

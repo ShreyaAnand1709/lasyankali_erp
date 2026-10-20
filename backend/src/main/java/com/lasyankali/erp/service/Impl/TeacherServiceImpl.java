@@ -162,6 +162,8 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 
 	@Override
+	@Transactional
+	@PreAuthorize("hasRole('TEACHER') and #p0 == authentication.name")
 	public TeacherResponseDTO getMyProfile(String username) {
 		// TODO Auto-generated method stub
 		Teacher teacher = teacherRepository

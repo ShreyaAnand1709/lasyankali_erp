@@ -457,35 +457,35 @@ public class PaymentServiceImpl implements PaymentService{
             Fee fee,
             String message) {
 
-PaymentVerificationResponseDTO response =
-        new PaymentVerificationResponseDTO();
-
-response.setPaymentId(
-        payment.getPaymentId()
-);
-
-response.setFeeId(
-        fee.getFeeId()
-);
-
-response.setProviderOrderId(
-        payment.getProviderOrderId()
-);
-
-response.setProviderPaymentId(
-        payment.getProviderPaymentId()
-);
-
-response.setPaymentStatus(
-        payment.getPaymentStatus()
-);
-
-response.setFeeStatus(
-        fee.getFeeStatus()
-);
-
-response.setMessage(message);
-
-return response;
-}
-}
+			PaymentVerificationResponseDTO response =
+			        new PaymentVerificationResponseDTO();
+			
+			response.setPaymentId(
+			        payment.getPaymentId()
+			);
+			
+			response.setFeeId(
+			        fee.getFeeId()
+			);
+			
+			response.setProviderOrderId(
+			        payment.getProviderOrderId()
+			);
+			
+			response.setProviderPaymentId(
+			        payment.getProviderPaymentId()
+			);
+			
+			response.setPaymentStatus(
+			        payment.getPaymentStatus()
+			);
+			
+			response.setFeeStatus(
+			        fee.getFeeStatus()
+			);
+			
+			response.setMessage(message);
+			
+			return response;
+			}
+			}

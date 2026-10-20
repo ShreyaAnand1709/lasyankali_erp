@@ -35,6 +35,7 @@ public class ParentServiceImpl implements ParentService{
 	}
 
 	@Override
+	@Transactional
 	@PreAuthorize("hasRole('ADMIN')")
 	public void createParent(CreateParentDTO createParentDTO) {
 		CreateUserDTO user = new CreateUserDTO();
@@ -82,6 +83,7 @@ public class ParentServiceImpl implements ParentService{
 	}
 
 	@Override
+	@Transactional
 	@PreAuthorize("hasRole('ADMIN')")
 	public ParentResponseDTO updateParent(Long parentId, UpdateParentDTO updateParentDTO) {
 		Parents parent = repo.findById(parentId)
@@ -133,6 +135,8 @@ public class ParentServiceImpl implements ParentService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	@PreAuthorize("hasRole('PARENT') and #p0 == authentication.name")
 	public ParentResponseDTO getMyProfile(String username) {
 		Parents parent = repo
 	            .findByUser_UserName(username)
