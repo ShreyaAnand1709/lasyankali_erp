@@ -31,21 +31,28 @@ const roleNames: Record<string, string> = {
 };
 
 function menuFor(role: string): MenuItem[] {
-  return [
+  const items: MenuItem[] = [
     { key: "overview", label: "Overview" },
     { key: "events", label: "Academy events" },
-    ...(role === "TEACHER"
-      ? [
-          { key: "students" as const, label: "Academy students" },
-          { key: "batches" as const, label: "Academy batches" },
-        ]
-      : [
-          {
-            key: "fees" as const,
-            label: role === "PARENT" ? "Children’s fees" : "My fees",
-          },
-        ]),
   ];
+
+  if (role === "STUDENT") {
+    items.push(
+      { key: "batches", label: "My batches" },
+      { key: "fees", label: "My fees" },
+    );
+  } else if (role === "TEACHER") {
+    items.push(
+      { key: "students", label: "Academy students" },
+      { key: "batches", label: "Academy batches" },
+    );
+  } else if (role === "PARENT") {
+    items.push(
+      { key: "fees", label: "Children’s fees" },
+    );
+  }
+
+  return items;
 }
 
 function columnsFor(section: DashboardSection): Column[] {

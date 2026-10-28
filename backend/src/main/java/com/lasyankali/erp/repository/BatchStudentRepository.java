@@ -13,4 +13,7 @@ public interface BatchStudentRepository extends JpaRepository<BatchStudent, Long
 	List<BatchStudent> findByStatus(EnrollmentStatus status);
 	List<BatchStudent> findByBatch_BatchId(Long batchId);
 	long countByBatch_BatchIdAndStatus(Long batchId,EnrollmentStatus status);
+	List<BatchStudent> findByStudent_User_UserNameAndStatus(
+	        String username,
+	        EnrollmentStatus status);
 }

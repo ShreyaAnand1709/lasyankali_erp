@@ -22,4 +22,5 @@ public interface BatchService {
 	void deleteStudent(Long batchId, Long studentId);
 	List<BatchMemberResponseDTO> getBatchStudents(Long batchId);
 	List<BatchMemberResponseDTO> getBatchTeachers(Long batchId);
+	List<BatchResponseDTO> getMyStudentBatches(String username);
 }

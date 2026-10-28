@@ -38,14 +38,16 @@ export async function getDashboardRecords(
       break;
 
     case "batches":
-      if (role !== "TEACHER") {
-        throw new Error("This section is not available for your role.");
-      }
-      path = "/api/batches";
-      break;
-
-    default:
-      return [];
+  if (role === "STUDENT") {
+    path = "/api/batches/my-batches";
+  } else if (role === "TEACHER") {
+    path = "/api/batches";
+  } else {
+    throw new Error("This section is not available for your role.");
+  }
+  break;
+  default:
+    return [];
   }
 
   const response = await fetch(`http://localhost:8080${path}`, {

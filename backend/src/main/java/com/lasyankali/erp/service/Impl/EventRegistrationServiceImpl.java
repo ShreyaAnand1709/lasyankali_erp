@@ -95,7 +95,7 @@ public class EventRegistrationServiceImpl implements EventRegistrationService{
 	@PreAuthorize("hasRole('ADMIN')")
 	public EventRegistrationDTO updateParticipationStatus(Long eventId, Long studentId, UpdateParticipationStatusDTO status) {
 		// TODO Auto-generated method stub
-		if (eventId == null || studentId == null) {
+		if (eventId == null || studentId == null || eventId <= 0 || studentId <=0 ) {
 	        throw new org.springframework.web.server.ResponseStatusException(
 	                org.springframework.http.HttpStatus.BAD_REQUEST,
 	                "Event ID and student ID are required");
@@ -106,6 +106,7 @@ public class EventRegistrationServiceImpl implements EventRegistrationService{
 	                org.springframework.http.HttpStatus.BAD_REQUEST,
 	                "Participation status is required");
 	    }
+	    
 
 	    EventRegister register = eventRegRepo
 	            .findByEvent_EventIdAndStudent_StudentId(eventId, studentId)
@@ -113,6 +114,14 @@ public class EventRegistrationServiceImpl implements EventRegistrationService{
 	                    new org.springframework.web.server.ResponseStatusException(
 	                            org.springframework.http.HttpStatus.NOT_FOUND,
 	                            "Event registration not found"));
+	    
+
+	    if (register.getEvent().getStatus()
+	            == com.lasyankali.erp.entity.enums.EventStatus.CANCELLED) {
+	        throw new org.springframework.web.server.ResponseStatusException(
+	                org.springframework.http.HttpStatus.CONFLICT,
+	                "Participation status cannot be updated for a cancelled event");
+	    }
 
 	    register.setParticipationStatus(status.getStatus());
 

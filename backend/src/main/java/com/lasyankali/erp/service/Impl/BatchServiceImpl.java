@@ -439,4 +439,27 @@ public class BatchServiceImpl implements BatchService {
         return new ResponseStatusException(
                 HttpStatus.CONFLICT, message);
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	@PreAuthorize("hasRole('STUDENT') and #p0 == authentication.name")
+	public List<BatchResponseDTO> getMyStudentBatches(String username) {
+		Student student = studentRepository.findByUser_UserName(username)
+	            .orElseThrow(() ->
+	                    notFound("No student profile is linked to your account"));
+
+	    if (student.getStatus() != Status.ACTIVE) {
+	        throw new org.springframework.security.access.AccessDeniedException(
+	                "Your student profile is inactive");
+	    }
+
+	    return batchStudentRepository
+	            .findByStudent_User_UserNameAndStatus(
+	                    username, EnrollmentStatus.ACTIVE)
+	            .stream()
+	            .map(BatchStudent::getBatch)
+	            .filter(batch -> batch.getStatus() == BatchStatus.ACTIVE)
+	            .map(batchmapper::mapToBatchResponse)
+	            .toList();
+	}
 }
