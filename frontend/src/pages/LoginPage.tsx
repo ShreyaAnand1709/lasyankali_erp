@@ -117,7 +117,7 @@ export default function LoginPage() {
 
             <div className="login-field">
               <label htmlFor="login-password">Password</label>
-
+              
               <div className="login-password-wrapper">
                 <input
                   id="login-password"
@@ -144,6 +144,9 @@ export default function LoginPage() {
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
+              <Link className="recovery-link" to="/forgot-password">
+                Forgot password?
+              </Link>
             </div>
 
             {error && (

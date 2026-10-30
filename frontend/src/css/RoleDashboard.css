@@ -252,3 +252,36 @@
     overflow: visible;
   }
 }
+
+.role-pay-button {
+  border: 1px solid #481526;
+  border-radius: 6px;
+  padding: 8px 18px;
+  background: #481526;
+  color: #fffaf3;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.role-pay-button:hover:not(:disabled) {
+  background: #632039;
+}
+
+.role-pay-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.role-pay-button:focus-visible {
+  outline: 2px solid #b28a51;
+  outline-offset: 3px;
+}
+
+.role-payment-notice {
+  padding: 12px 16px;
+  border: 1px solid #bed4bd;
+  border-radius: 6px;
+  background: #edf5e9;
+  color: #315330;
+}

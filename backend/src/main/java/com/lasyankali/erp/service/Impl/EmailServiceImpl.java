@@ -53,4 +53,37 @@ public class EmailServiceImpl implements EmailService{
 		
 	}
 
+	@Override
+	public void sendPasswordResetMail(String receiverMail, String name, String resetLink) {
+		// TODO Auto-generated method stub
+
+    String displayName =
+            name == null || name.isBlank()
+                    ? "there"
+                    : name;
+
+    SimpleMailMessage message = new SimpleMailMessage();
+
+    message.setFrom(this.userName);
+    message.setTo(receiverMail);
+    message.setSubject("Reset your NrityaSutra password");
+
+    message.setText(
+            "Hello " + displayName + ",\n\n"
+            + "We received a request to reset your "
+            + "Lasyankali: NrityaSutra password.\n\n"
+            + "Open this link to choose a new password:\n"
+            + resetLink + "\n\n"
+            + "This link expires in 15 minutes "
+            + "and can only be used once.\n\n"
+            + "If you did not request this reset, "
+            + "you can ignore this email. "
+            + "Your password has not been changed.\n\n"
+            + "Lasyankali: NrityaSutra"
+    );
+
+    javaMailSender.send(message);
+		
+	}
+
 }

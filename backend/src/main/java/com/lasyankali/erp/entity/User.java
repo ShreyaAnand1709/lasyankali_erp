@@ -62,10 +62,13 @@ public class User {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    @Column(name = "auth_version", nullable = false)
+    private long authVersion;
 
 	public User(Long userId, String userName, String email, String passwordHash, String mobileNumber, String firstName,
 			String lastName, Role role, Boolean isActive, LocalDateTime lastLogin, LocalDateTime createdAt,
-			LocalDateTime updatedAt) {
+			LocalDateTime updatedAt, long authVersion) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -79,6 +82,7 @@ public class User {
 		this.lastLogin = lastLogin;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.authVersion = authVersion;
 	}
 
 	public User() {
@@ -181,5 +185,12 @@ public class User {
 		this.userId = userId;
 	}
     
+	public long getAuthVersion() {
+	    return authVersion;
+	}
+
+	public void setAuthVersion(long authVersion) {
+	    this.authVersion = authVersion;
+	}
     
 }

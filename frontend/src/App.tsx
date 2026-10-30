@@ -17,6 +17,7 @@ import BatchManagement from "./pages/BatchManagement";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EventManagement from "./pages/EventManagement";
 import FeeManagement from "./pages/FeeManagement";
+import PasswordRecoveryPage from "./pages/PasswordRecoveryPage";
 
 export default function App() {
   return (
@@ -25,6 +26,19 @@ export default function App() {
         {/* Public pages */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+  path="/forgot-password"
+  element={
+    <PasswordRecoveryPage key="forgot-password" mode="forgot" />
+  }
+/>
+
+<Route
+  path="/reset-password"
+  element={
+    <PasswordRecoveryPage key="reset-password" mode="reset" />
+  }
+/>
 
         {/* Admin workspace */}
         <Route element={<ProtectedRoute allowedRole="ADMIN" />}>

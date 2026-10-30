@@ -100,7 +100,10 @@ public class AuthServiceImpl implements AuthService{
 	    }
 
 	    LoginResponseDTO response = new LoginResponseDTO();
-	    response.setToken(jwtService.generateToken(user.getUserName()));
+	    response.setToken(
+	            jwtService.generateToken(
+	                    user.getUserName(),
+	                    user.getAuthVersion()));
 	    response.setUsername(user.getUserName());
 	    response.setRole(user.getRole().getRoleName());
 	    response.setMessage("Login Successful");

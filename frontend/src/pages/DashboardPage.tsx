@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { logout } from "../api/auth";
 import { getDashboardRecords } from "../api/dashboard";
+import { payFee } from "../api/checkout";
 import ProfileOverview from "../components/ProfileOverview";
 
 import type {
@@ -47,9 +48,7 @@ function menuFor(role: string): MenuItem[] {
       { key: "batches", label: "Academy batches" },
     );
   } else if (role === "PARENT") {
-    items.push(
-      { key: "fees", label: "Children’s fees" },
-    );
+    items.push({ key: "fees", label: "Children’s fees" });
   }
 
   return items;
@@ -135,8 +134,13 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [attempt, setAttempt] = useState(0);
+
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
+
+  const [payingFeeId, setPayingFeeId] = useState<number | null>(null);
+  const [paymentMessage, setPaymentMessage] = useState("");
+  const [paymentError, setPaymentError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -178,11 +182,22 @@ export default function DashboardPage() {
     }
 
     void load();
+
     return () => controller.abort();
   }, [role, section, attempt]);
 
+  function changeSection(nextSection: DashboardSection) {
+    if (payingFeeId !== null || nextSection === section) return;
+
+    setRecords([]);
+    setError("");
+    setPaymentMessage("");
+    setPaymentError("");
+    setSection(nextSection);
+  }
+
   async function handleLogout() {
-    if (loggingOut) return;
+    if (loggingOut || payingFeeId !== null) return;
 
     setLoggingOut(true);
     setLogoutError("");
@@ -193,7 +208,7 @@ export default function DashboardPage() {
       try {
         await refreshUser();
       } catch {
-        // Logout already succeeded. The login page remains reachable.
+        // Logout succeeded even if refreshing the user fails.
       }
 
       navigate("/login", { replace: true });
@@ -208,12 +223,51 @@ export default function DashboardPage() {
     }
   }
 
+  async function handlePay(feeId: number) {
+    if (payingFeeId !== null || loading || loggingOut) return;
+
+    if (!Number.isSafeInteger(feeId) || feeId <= 0) {
+      setPaymentError("This fee has an invalid ID. Please refresh.");
+      return;
+    }
+
+    setPayingFeeId(feeId);
+    setPaymentMessage("");
+    setPaymentError("");
+
+    try {
+      const result = await payFee(feeId);
+
+      setPaymentMessage(
+        result
+          ? "Payment verified successfully. Your fee is now paid."
+          : "Checkout closed. Payment has not been confirmed.",
+      );
+    } catch (exception) {
+      setPaymentError(
+        exception instanceof Error
+          ? exception.message
+          : "Unable to complete payment.",
+      );
+    } finally {
+      setPayingFeeId(null);
+      setAttempt((previous) => previous + 1);
+    }
+  }
+
   if (!user) return null;
 
   const title =
     menu.find((item) => item.key === section)?.label ?? "Overview";
 
   const columns = columnsFor(section);
+
+  const showPaymentActions =
+    section === "fees" &&
+    (role === "STUDENT" || role === "PARENT");
+
+  const columnCount =
+    columns.length + (showPaymentActions ? 1 : 0);
 
   return (
     <div className="role-layout">
@@ -238,12 +292,11 @@ export default function DashboardPage() {
                 section === item.key ? "role-nav-active" : ""
               }
               type="button"
-              aria-current={section === item.key ? "page" : undefined}
-              onClick={() => {
-                setRecords([]);
-                setError("");
-                setSection(item.key);
-              }}
+              disabled={payingFeeId !== null}
+              aria-current={
+                section === item.key ? "page" : undefined
+              }
+              onClick={() => changeSection(item.key)}
             >
               {item.label}
             </button>
@@ -257,9 +310,10 @@ export default function DashboardPage() {
 
           <div className="role-account">
             <span>{user.username}</span>
+
             <button
               type="button"
-              disabled={loggingOut}
+              disabled={loggingOut || payingFeeId !== null}
               onClick={() => void handleLogout()}
             >
               {loggingOut ? "Logging out…" : "Logout"}
@@ -269,20 +323,37 @@ export default function DashboardPage() {
 
         <main className="role-main">
           {logoutError && (
-            <p className="role-error" role="alert">{logoutError}</p>
+            <p className="role-error" role="alert">
+              {logoutError}
+            </p>
           )}
 
           <h1>{title}</h1>
 
+          {section === "fees" && paymentMessage && (
+            <p className="role-payment-notice" role="status">
+              {paymentMessage}
+            </p>
+          )}
+
+          {section === "fees" && paymentError && (
+            <p className="role-error" role="alert">
+              {paymentError}
+            </p>
+          )}
+
           {section === "overview" ? (
             <>
               <p className="role-introduction">
-                Your personal details and academy information, together.
+                Your personal details and academy information,
+                together.
               </p>
 
               <ProfileOverview />
 
-<h2 className="role-section-title">Your workspace</h2>
+              <h2 className="role-section-title">
+                Your workspace
+              </h2>
 
               <div className="role-shortcuts">
                 {menu
@@ -291,7 +362,7 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       key={item.key}
-                      onClick={() => setSection(item.key)}
+                      onClick={() => changeSection(item.key)}
                     >
                       <span>{item.label}</span>
                       <span aria-hidden="true">→</span>
@@ -301,19 +372,13 @@ export default function DashboardPage() {
             </>
           ) : (
             <>
-              {role === "TEACHER" &&
-                ["students", "batches"].includes(section) && (
-                  <p className="role-introduction">
-                    This is the academy-wide list currently permitted
-                    by the backend.
-                  </p>
-                )}
-
               <button
                 className="role-refresh"
                 type="button"
-                disabled={loading}
-                onClick={() => setAttempt((previous) => previous + 1)}
+                disabled={loading || payingFeeId !== null}
+                onClick={() =>
+                  setAttempt((previous) => previous + 1)
+                }
               >
                 Refresh
               </button>
@@ -329,6 +394,7 @@ export default function DashboardPage() {
                 <div className="role-table-wrapper">
                   <table className="role-table">
                     <caption>{records.length} records</caption>
+
                     <thead>
                       <tr>
                         {columns.map((column) => (
@@ -336,6 +402,10 @@ export default function DashboardPage() {
                             {column.label}
                           </th>
                         ))}
+
+                        {showPaymentActions && (
+                          <th scope="col">Payment</th>
+                        )}
                       </tr>
                     </thead>
 
@@ -347,6 +417,16 @@ export default function DashboardPage() {
                           record.studentId ??
                           record.batchId;
 
+                        const feeId = Number(record.feeId);
+
+                        const validFeeId =
+                          Number.isSafeInteger(feeId) &&
+                          feeId > 0;
+
+                        const canPay =
+                          record.feeStatus === "PENDING" ||
+                          record.feeStatus === "OVERDUE";
+
                         return (
                           <tr key={String(recordId)}>
                             {columns.map((column) => (
@@ -357,13 +437,41 @@ export default function DashboardPage() {
                                 )}
                               </td>
                             ))}
+
+                            {showPaymentActions && (
+                              <td>
+                                {record.feeStatus === "PAID" ? (
+                                  <span>Paid</span>
+                                ) : canPay ? (
+                                  <button
+                                    className="role-pay-button"
+                                    type="button"
+                                    disabled={
+                                      payingFeeId !== null ||
+                                      loggingOut ||
+                                      !validFeeId
+                                    }
+                                    onClick={() =>
+                                      void handlePay(feeId)
+                                    }
+                                    aria-label={`Pay fee ${feeId}`}
+                                  >
+                                    {payingFeeId === feeId
+                                      ? "Processing…"
+                                      : "Pay"}
+                                  </button>
+                                ) : (
+                                  "—"
+                                )}
+                              </td>
+                            )}
                           </tr>
                         );
                       })}
 
                       {records.length === 0 && (
                         <tr>
-                          <td colSpan={columns.length}>
+                          <td colSpan={columnCount}>
                             No records available.
                           </td>
                         </tr>
