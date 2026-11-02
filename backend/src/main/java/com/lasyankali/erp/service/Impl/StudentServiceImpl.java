@@ -134,7 +134,7 @@ public class StudentServiceImpl implements StudentService{
 
 	// retreiving all the student details
 	@Override
-	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<StudentResponseDTO> getAllStudents() {
 		List<Student> studentsList = studentRepository.findByStatus(Status.ACTIVE);
 		List<StudentResponseDTO> response = new ArrayList<>();
@@ -146,7 +146,7 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public StudentResponseDTO getStudentById(Long studentId) {
 		Student student = studentRepository.findById(studentId).
 										orElseThrow(
@@ -192,7 +192,7 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<StudentResponseDTO> searchStudents(String keyword) {
 		    List<Student> students = studentRepository.searchStudents(keyword);
 		    return students.stream()

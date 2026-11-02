@@ -27,18 +27,18 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
-  path="/forgot-password"
-  element={
-    <PasswordRecoveryPage key="forgot-password" mode="forgot" />
-  }
-/>
+          path="/forgot-password"
+          element={
+            <PasswordRecoveryPage key="forgot-password" mode="forgot" />
+          }
+        />
 
-<Route
-  path="/reset-password"
-  element={
-    <PasswordRecoveryPage key="reset-password" mode="reset" />
-  }
-/>
+          <Route
+            path="/reset-password"
+            element={
+              <PasswordRecoveryPage key="reset-password" mode="reset" />
+            }
+          />
 
         {/* Admin workspace */}
         <Route element={<ProtectedRoute allowedRole="ADMIN" />}>
